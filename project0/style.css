@@ -8,14 +8,6 @@ header {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  padding: 15px;
-}
-
-div {
-  padding: 5px;
-  margin: 5px;
-  display: grid;
 }
 
 a:hover {
@@ -48,9 +40,9 @@ p {
 }
 
 #icon {
-  font-size: 40px;
+  font-size: 30px;
   font-family: Microsoft Yahei, Georgia, "Times New Roman", Times, serif;
-  color: #47c6ec;
+  color: #39689e;
   text-shadow: 2px 4px 8px #72e7eb;
   font-weight: bold;
   margin-left: 25px;

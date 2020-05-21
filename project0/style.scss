@@ -12,16 +12,14 @@ header {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    padding: 15px;
+    //justify-content: space-between;
 }
 
-div {
-    padding: 5px;
-    margin: 5px;
-    display: grid;
-}
-
+// div {
+//     padding: 5px;
+//     margin: 5px;
+//     display: grid;
+// }
 a:hover {
     text-decoration: none;
 }
@@ -54,9 +52,9 @@ p {
 }
 
 #icon {
-    font-size: 40px;
+    font-size: 30px;
     font-family: Microsoft Yahei, Georgia, 'Times New Roman', Times, serif;
-    color: $themecolor;
+    color: $textcolor;
     text-shadow: 2px 4px 8px $subcolor;
     font-weight: bold;
     margin-left: 25px;
