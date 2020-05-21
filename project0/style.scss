@@ -1,8 +1,63 @@
-$titlecolor: lightblue;
+$themecolor: rgb(71, 198, 236);
+$subcolor: rgb(114, 231, 235);
+$bgcolor: rgb(239, 255, 203);
+$textcolor: rgb(57, 104, 158);
+body {
+    background-color: $bgcolor;
+}
+
 header {
-    color: black;
+    backdrop-filter: blur(20px);
+    background-color: rgba(255, 255, 255, .4);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+}
+
+div {
+    padding: 5px;
+    margin: 5px;
+    display: grid;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+nav {
+    a {
+        color: $textcolor;
+        font-size: x-large;
+        margin: 8px;
+        text-shadow: 1px 2px 3px $subcolor;
+    }
+    a:hover {
+        color: $themecolor;
+    }
 }
 
 h1 {
-    color: $titlecolor;
+    color: $themecolor;
+    text-shadow: 1px 2px 3px $subcolor;
+    margin: 10px;
+}
+
+p {
+    color: $textcolor;
+}
+
+.ptxt {
+    color: $textcolor;
+    font-size: x-large;
+}
+
+#icon {
+    font-size: 40px;
+    font-family: Microsoft Yahei, Georgia, 'Times New Roman', Times, serif;
+    color: $themecolor;
+    text-shadow: 2px 4px 8px $subcolor;
+    font-weight: bold;
+    margin-left: 25px;
 }
