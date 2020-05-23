@@ -2,7 +2,12 @@ $themecolor: rgb(106, 201, 238);
 $subcolor: rgb(123, 175, 218);
 $bgcolor: rgb(239, 255, 203);
 $textcolor: rgb(51, 65, 80);
-$emphcolor: black;
+$emphcolor: rgb(27, 23, 56);
+$darkcolor: rgb(40, 39, 46);
+html {
+    scroll-behavior: smooth;
+}
+
 .bg-image {
     //background-color: $bgcolor;
     //background-image: url("C:/Users/lyx20/Pictures/Saved Pictures/Download-Space-Wallpaper.jpg");
@@ -17,12 +22,12 @@ $emphcolor: black;
     // -moz-filter: blur(5px);
     // -o-filter: blur(5px);
     // -ms-filter: blur(5px);
-    filter: blur(10px);
+    filter: blur(5px);
     transform: scale(1.02);
 }
 
 .content {
-    position: fixed;
+    position: absolute;
     left: 0;
     right: 0;
     z-index: 9999;
@@ -32,16 +37,10 @@ $emphcolor: black;
 
 header {
     backdrop-filter: blur(50px);
-    background-color: rgba(255, 255, 255, .6);
+    background-color: rgba(255, 255, 255, .4);
     display: flex;
-    //flex-direction: row;
 }
 
-// div {
-//     padding: 5px;
-//     margin: 5px;
-//     display: grid;
-// }
 a:hover {
     text-decoration: none;
 }
@@ -69,8 +68,7 @@ a:hover {
     }
     a:hover {
         color: $emphcolor;
-        font-weight: 500;
-        text-shadow: 1px 2px 3px $subcolor;
+        text-shadow: 0px 0px 5px $subcolor;
     }
 }
 
@@ -79,27 +77,46 @@ a:hover {
 // }
 .active {
     font-weight: 500;
-    text-shadow: 1px 2px 3px $subcolor;
+    text-shadow: 0px 0px 5px $subcolor;
 }
 
 .main {
-    background-color: rgba(255, 255, 255, .8);
+    backdrop-filter: blur(50px);
+    background-color: rgba(255, 255, 255, .6);
 }
 
-.bkgd {
-    align-items: center;
-    justify-content: center;
+%shadowing {
+    box-shadow: 0px 0px 15px $darkcolor;
+}
+
+.flow-box {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.card {
+    @extend %shadowing;
+    margin: 1rem;
 }
 
 h1 {
-    color: $themecolor;
+    color: $textcolor;
     //text-shadow: 1px 2px 3px $subcolor;
     margin: 10px;
 }
 
+h5 {
+    font-size: large;
+}
+
+.card-text {
+    font-size: medium;
+}
+
 p {
     color: $textcolor;
-    font-size: x-large;
+    font-size: large;
 }
 
 .ptxt {
@@ -108,7 +125,10 @@ p {
 }
 
 #my-pic {
-    width: 200px;
-    height: 200px;
-    position: relative;
+    border-radius: 200px;
+    box-shadow: 0px 0px 50px $darkcolor;
 }
+
+// .card {
+//     margin: 50px;
+// }

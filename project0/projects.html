@@ -10,7 +10,7 @@
 <body>
     <!-- background image -->
     <div class="bg-image">
-        <img src="C:\Users\lyx20\Pictures\Saved Pictures\rainy_street_tim_palmer.jpg" width="100%">
+        <img src=".\src\bg.jpg" width="100%">
     </div>
 
     <!-- content of the website -->
@@ -20,14 +20,15 @@
             <nav class="navbar navbar-expand-lg">
                 <!-- Brand Icon -->
                 <a id="navbar-brand" href="./index.html">
-                    <img src="C:\Users\lyx20\Pictures\useful_Images\liu.gif" width="40" height="40" alt="" loading="lazy">
-                    <img src="C:\Users\lyx20\Pictures\useful_Images\yu.gif" width="40" height="40" alt="" loading="lazy">
-                    <img src="C:\Users\lyx20\Pictures\useful_Images\xuan.gif" width="50" height="50" alt="" loading="lazy">
+                    <img src=".\src\liu.gif" width="40" height="40" alt="" loading="lazy">
+                    <img src=".\src\yu.gif" width="40" height="40" alt="" loading="lazy">
+                    <img src=".\src\xuan.gif" width="50" height="50" alt="" loading="lazy">
                 </a>
 
+
                 <!-- Navs to pages -->
-                <div style="padding-left: 10px;">
-                    <ul class="navbar-nav">
+                <div id="navPages">
+                    <ul class="navbar-nav mr-auto">
                         <li class="nav-item"><a class="nav-link" href="./skills.html">Skills</a></li>
                         <li class="nav-item"><a class="nav-link" href="./timeline.html">Timeline</a></li>
                         <li class="nav-item active"><a class="nav-link" href="./projects.html">Projects</a></li>
@@ -39,26 +40,97 @@
         <!-- main content -->
 
         <div class="container">
-            <h1>Projects</h1>
-            <div class="row">
-                <div class="card" style="width: 18rem;">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+            <!-- <h1>Projects</h1> -->
+
+            <div class="flow-box d-flex flex-wrap mt-2">
+                <!-- first column -->
+                <div class="col-12 col-md-4 d-flex flex-column align-items-center">
+                    <div class="card main " style="width: 18rem;">
+                        <a href="#">
+                            <img src="./src/prj1.jpg" class="card-img-top" height="auto" width="auto">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+                                    laborum.
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="card main" style="width: 18rem;">
+                        <a href="#">
+                            <img src="./src/prj2.jpg" class="card-img-top" height="auto" width="auto">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+                <!-- second column -->
+                <div class="col-12 col-md-4 d-flex flex-column align-items-center">
+                    <div class="card main" style="width: 18rem;">
+                        <a href="#">
+                            <img src="./src/prj3.jpg" class="card-img-top" height="auto" width="auto">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="card main" style="width: 18rem;">
+                        <a href="#">
+                            <img src="./src/prj1.jpg" class="card-img-top" height="auto" width="auto">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+                                    laborum.
+                                </p>
+                            </div>
+                        </a>
                     </div>
                 </div>
-                <div class="card" style="width: 18rem;">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                <!-- third column -->
+                <div class="col-12 col-md-4 d-flex flex-column align-items-center">
+                    <div class="card main" style="width: 18rem;">
+                        <a href="#">
+                            <img src="./src/prj2.jpg" class="card-img-top" height="auto" width="auto">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="card main" style="width: 18rem;">
+                        <a href="#">
+                            <img src="./src/prj3.jpg" class="card-img-top" height="auto" width="auto">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="card main" style="width: 18rem;">
+                        <a href="#">
+                            <img src="./src/prj1.jpg" class="card-img-top" height="auto" width="auto">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
+            <!-- end of flow-box -->
         </div>
+    </div>
+    <!-- end of content -->
 
 </body>
 

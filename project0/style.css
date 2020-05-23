@@ -1,15 +1,19 @@
+html {
+  scroll-behavior: smooth;
+}
+
 .bg-image {
   position: fixed;
   left: 0;
   right: 0;
   z-index: 1;
   display: block;
-  filter: blur(10px);
+  filter: blur(5px);
   transform: scale(1.02);
 }
 
 .content {
-  position: fixed;
+  position: absolute;
   left: 0;
   right: 0;
   z-index: 9999;
@@ -17,7 +21,7 @@
 
 header {
   backdrop-filter: blur(50px);
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.4);
   display: flex;
 }
 
@@ -43,33 +47,50 @@ a:hover {
   margin: 8px;
 }
 .navbar a:hover {
-  color: black;
-  font-weight: 500;
-  text-shadow: 1px 2px 3px #7bafda;
+  color: #1b1738;
+  text-shadow: 0px 0px 5px #7bafda;
 }
 
 .active {
   font-weight: 500;
-  text-shadow: 1px 2px 3px #7bafda;
+  text-shadow: 0px 0px 5px #7bafda;
 }
 
 .main {
-  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(50px);
+  background-color: rgba(255, 255, 255, 0.6);
 }
 
-.bkgd {
-  align-items: center;
-  justify-content: center;
+.card {
+  box-shadow: 0px 0px 15px #28272e;
+}
+
+.flow-box {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.card {
+  margin: 1rem;
 }
 
 h1 {
-  color: #6ac9ee;
+  color: #334150;
   margin: 10px;
+}
+
+h5 {
+  font-size: large;
+}
+
+.card-text {
+  font-size: medium;
 }
 
 p {
   color: #334150;
-  font-size: x-large;
+  font-size: large;
 }
 
 .ptxt {
@@ -78,9 +99,8 @@ p {
 }
 
 #my-pic {
-  width: 200px;
-  height: 200px;
-  position: relative;
+  border-radius: 200px;
+  box-shadow: 0px 0px 50px #28272e;
 }
 
 /*# sourceMappingURL=style.css.map */
