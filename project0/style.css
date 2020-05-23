@@ -76,6 +76,10 @@ a:hover {
   margin: 1rem;
 }
 
+.card:hover {
+  transform: scale(1.01);
+}
+
 h1 {
   color: #334150;
   margin: 10px;

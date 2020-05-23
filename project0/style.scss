@@ -103,6 +103,10 @@ a:hover {
     margin: 1rem;
 }
 
+.card:hover {
+    transform: scale(1.01);
+}
+
 h1 {
     color: $textcolor;
     //text-shadow: 1px 2px 3px $subcolor;
