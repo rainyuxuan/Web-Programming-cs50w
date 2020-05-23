@@ -16,13 +16,14 @@ html {
   position: absolute;
   left: 0;
   right: 0;
-  z-index: 9999;
+  z-index: 20;
 }
 
 header {
   backdrop-filter: blur(50px);
   background-color: rgba(255, 255, 255, 0.4);
   display: flex;
+  z-index: 50;
 }
 
 a:hover {
