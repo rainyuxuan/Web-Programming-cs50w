@@ -1,9 +1,9 @@
 $themecolor: rgb(106, 201, 238);
-$subcolor: rgb(123, 175, 218);
+$subcolor: rgb(107, 146, 230);
 $bgcolor: rgb(239, 255, 203);
 $textcolor: rgb(51, 65, 80);
 $emphcolor: rgb(27, 23, 56);
-$darkcolor: rgb(40, 39, 46);
+$darkcolor: rgb(26, 43, 75);
 html {
     scroll-behavior: smooth;
 }
@@ -40,7 +40,9 @@ header {
     background-color: rgba(255, 255, 255, .4);
     display: flex;
     z-index: 50;
-    // position: fixed;
+    position: sticky;
+    top: 0;
+    @extend %shadowing;
     // width: 100%;
 }
 
@@ -89,7 +91,7 @@ a:hover {
 }
 
 %shadowing {
-    box-shadow: 0px 0px 15px $darkcolor;
+    box-shadow: 0px 0px 20px $darkcolor;
 }
 
 .flow-box {
@@ -134,6 +136,11 @@ p {
 #my-pic {
     border-radius: 200px;
     box-shadow: 0px 0px 50px $darkcolor;
+}
+
+#my-pic:hover,
+#intro-block:hover {
+    transform: scale(1.01);
 }
 
 // .card {
