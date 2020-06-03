@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session, render_template, request
+from flask import Flask, session, render_template, request, redirect, url_for
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -30,10 +30,35 @@ def search():
     search = request.form.get("search")
     return render_template("search.html", search=search)
 
-@app.route("/log-in")
+@app.route("/log-in", methods=["GET", "POST"])
 def log_in():
-    return render_template("log-in.html")
+    error = None
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
 
-@app.route("/sign-up")
+        if not username or not password:
+            error = "Please input your username and password!"
+        elif username != password:
+            error = "Username and password did not match!"
+        else:
+            return redirect(url_for('index'))
+    
+    return render_template("log-in.html", error=error)
+
+@app.route("/sign-up", methods=["GET", "POST"])
 def sign_up():
-    return render_template("sign-up.html")
+    error = None
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        confirm = request.form.get("confirm")
+
+        if not username or not password or not confirm:
+            error = "Please input your information!"
+        elif confirm != password :
+            error = "Please confirm your password!"
+        else:
+            return redirect(url_for('index'))
+
+    return render_template("sign-up.html", error=error)
