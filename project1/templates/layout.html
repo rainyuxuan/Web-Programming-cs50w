@@ -6,8 +6,16 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <!-- <link rel="stylesheet" href="style.css"> -->
     <style>
+        * {
+            font-family: Georgia, Sans-serif;
+        }
+        
         body {
             background-color: #e0d3af;
+        }
+        
+        a {
+            color: #2b73af;
         }
         
         a:hover {
@@ -27,6 +35,20 @@
         .navbar-brand {
             font-size: x-large;
             font-weight: bolder;
+        }
+        
+        .search {
+            border-radius: 0;
+            height: 3em;
+        }
+        
+        #search-btn {
+            width: 10em;
+        }
+        
+        #search-bar {
+            border-width: 0;
+            width: 25em;
         }
     </style>
     {% block style %} {% endblock %}
@@ -51,8 +73,10 @@
                     </li>
                 </ul>
                 <span class="navbar-text">
-                    <a id="log-in" href="#">Log-in</a> | <a id="sign-up" href="#">Sign-up</a>
-                </span> |
+                    <!-- <a id="log-in" href="{{ url_for('log_in') }}">Log-in</a> |  -->
+                    <a id="log-in" href="{{ url_for('log_in') }}"><button class="btn btn-outline-light mr-1">Log-in</button></a>  
+                    <a id="sign-up" href="{{ url_for('sign_up') }}"> Sign-up</a>
+                </span>
             </div>
         </nav>
     </header>

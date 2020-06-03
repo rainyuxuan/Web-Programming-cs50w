@@ -3,10 +3,6 @@
 {% block title %} Libroj: Home {% endblock %} 
 {% block style %} 
 <style>
-    *{
-        font-family: Georgia, Sans-serif;
-    }
-
     h1{
         font-size: 9em;
     }
@@ -15,33 +11,17 @@
         font-size: 2em;
         font-weight: 200;
         font-style: italic;
-    }
-
-    .search{
-        border-radius: 0;
-        height:3em;
-    }
-
-    #search-btn {
-        width: 10em;
-    }
-
-    #search-bar{
-        border-width:0; 
-        width: 25em; 
-    }
-
-    
+    }    
 </style>
 {% endblock %}
 {% block body %}
 <!-- main content -->
 <div class="container d-flex flex-column align-items-center justify-content-center mt-5">
     <h1>Libroj</h1>
-    <h2>Your trusted book reviewer</h2>
-    <form class="form-inline my-4" >
-      <input class="search form-control mr-sm-2" type="search" placeholder="Find Your Favorite Book" aria-label="Search" id="search-bar">
-      <button class="btn search btn-outline-dark my-2 my-sm-0" id="search-btn" type="submit">Search</button>
+    <h2>Your trusted book reviewer.</h2>
+    <form class="form-inline my-4" action="{{ url_for('search') }}" method="post">
+        <input class="search form-control mr-sm-2" name="search" type="search" placeholder="Find your favorite book" id="search-bar">
+        <button class="btn search btn-outline-dark my-2 my-sm-0" id="search-btn" type="submit">Search</button>
     </form>
 </div>
 {% endblock %}
