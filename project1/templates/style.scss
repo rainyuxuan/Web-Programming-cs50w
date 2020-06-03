@@ -1,11 +1,11 @@
 $themecolor: rgb(106, 201, 238);
 $subcolor: rgb(107, 146, 230);
-$bgcolor: rgb(239, 255, 203);
+$bgcolor: rgb(203, 255, 223);
 $textcolor: rgb(51, 65, 80);
 $emphcolor: rgb(27, 23, 56);
 $darkcolor: rgb(26, 43, 75);
-html {
-    scroll-behavior: smooth;
+body {
+    background-color: $bgcolor;
 }
 
 %shadowing {
@@ -18,11 +18,24 @@ a:hover {
 
 header {
     backdrop-filter: blur(50px);
-    background-color: rgba(255, 255, 255, .4);
+    background-color: rgba(255, 255, 255, .2);
     display: flex;
     z-index: 50;
     position: sticky;
     top: 0;
     @extend %shadowing;
     // width: 100%;
+}
+
+.navbar {
+    a {
+        color: $textcolor;
+        font-size: x-large;
+        margin: 8px;
+        text-shadow: 1px 2px 3px $subcolor;
+    }
+    a:hover {
+        color: $emphcolor;
+        text-shadow: 0px 0px 5px $subcolor;
+    }
 }
