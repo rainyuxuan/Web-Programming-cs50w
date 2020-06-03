@@ -1,0 +1,21 @@
+{% extends "layout.html" %} {% block title %} Libroj: Log-in {% endblock %} {% block style %}
+<style>
+    .account {
+        width: 20em;
+    }
+</style>
+{% endblock %} {% block body %}
+<!-- main content -->
+<div class="container d-flex flex-column align-items-center mt-3">
+    <h1> Create an Account </h1>
+    <form>
+        <div class="form-group col mb-0">
+            <input type="text" class="account form-control my-1" placeholder="Username">
+            <input type="password" class="account form-control my-1" placeholder="Password">
+            <input type="password" class="account form-control my-1" placeholder="Confirm Password">
+            <button type="submit" class="btn btn-dark account my-1">Sign Up</button>
+        </div>
+    </form>
+    <a id="log-in" href="{{ url_for('log_in') }}">Already have an account? Log in!</a>
+</div>
+{% endblock %}
