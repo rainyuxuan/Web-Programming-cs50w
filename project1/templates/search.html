@@ -1,7 +1,25 @@
 {% extends "layout.html" %} 
 {% block title %} Libroj: Search for {{search}} {% endblock %} 
 {% block style %}
+<style>
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
 
+    .search-result a{
+        color: #343a40;
+    }
+    .search-result a:hover{
+        transform: scale(1.01)
+    }
+
+    strong{
+        font-size: large;
+    }
+
+</style>
 {% endblock %}
 
 {% block body %}
@@ -14,7 +32,19 @@
     </form>
     <hr>
     <div class="container d-flex flex-column mt-1">
-        DISPLAY THE RESULTS
+        {% if not results %}
+        Sorry, your are a moron. 
+        {% else %}
+        <ul> 
+            {% for book in results %}
+                <li class="search-result mb-0 d-flex flex-column"> 
+                    <a href="{{ url_for('book', isbn=book.isbn) }}"> <strong>{{book.title}} </strong>({{book.year}}) - {{book.author}} </a> 
+                    <p> ISBN: {{book.isbn}} </p>
+                </li>
+                <br/>
+            {% endfor %}
+        </ul>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

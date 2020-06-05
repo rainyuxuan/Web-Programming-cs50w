@@ -57,35 +57,37 @@
 <!-- main content -->
 <div class="container d-flex flex-column mt-3">
     <form class="form-inline my-0" action="{{ url_for('search') }}" method="post">
-        <input class="search input form-control mr-sm-2" name="search" type="search" placeholder={{search}} id="search-bar" style="width: 80%;">
+        <input class="search input form-control mr-sm-2" name="search" type="search" placeholder="Search for another book" id="search-bar" style="width: 80%;">
         <button class="btn search btn-dark my-1" id="search-btn" type="submit">Search</button>
     </form>
     <hr>
     <div class="container d-flex flex-column mt-0">
         <div class="container d-flex flex-column mb-1" id="bookDiv">
-            <h2>title <span class="badge badge-dark">average_score</span> </h2>
+            <h2>{{book.title}} <span class="badge badge-dark">average_score</span> </h2>
             <ul style="padding-left: 2em;">
-                <li><strong>Author: </strong><span>author</span></li>
-                <li><strong>Publication Year: </strong><span>year</span></li>
-                <li><strong>ISBN: </strong><span>isbn</span></li>
+                <li><strong>Author: </strong><span>{{book.author}}</span></li>
+                <li><strong>Publication Year: </strong><span>{{book.year}}</span></li>
+                <li><strong>ISBN: </strong><span>{{book.isbn}}</span></li>
             </ul>
         </div>
         <div class="container d-flex flex-column my-2" id="reviewDiv">
             <h3>Book Reviews (review_count)</h3>
-            <form>
+            <form action="{{ url_for('search') }}" method="post">
                 <div class="form-group my-1">
-                    <input type="number" class="form-control comment my-2" id="rating" placeholder="Rating: 1 ~ 5">
-                    <textarea type="text" class="form-control comment my-2" id="content" placeholder="Please leave some comment!" rows="5"> </textarea>
+                    <input name="rating" type="number" class="form-control comment my-2" id="rating" placeholder="Rating: 1 ~ 5">
+                    <textarea name="content" type="text" class="form-control comment my-2" id="content" placeholder="Please leave some comment!" rows="5"> </textarea>
                 </div>
                 <button class="btn search btn-light mt-3 my-sm-0" id="submitButton" type="submit">Submit Comment!</button>
             </form>
             <div class="my-2">
                 <ul style="padding-top: 1em;">
+                    {% for review in reviews %}
                     <li>
-                        <strong>review_username<span class="badge badge-dark">5</span></strong>
+                        <strong>{{review.username}}<span class="badge badge-dark">{{review.rating}}</span></strong>
                         <br/>
-                        <textarea readonly disabled class="comment comment-text" rows="5">review_content </textarea>
+                        <textarea readonly disabled class="comment comment-text" rows="5" style="padding: 1em;">{{review.content}} </textarea>
                     </li>
+                    {% endfor %}
                 </ul>
             </div>
 
