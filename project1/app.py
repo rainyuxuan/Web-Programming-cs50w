@@ -28,6 +28,10 @@ def index():
 @app.route("/search", methods=["POST"])
 def search():
     search = request.form.get("search")
+
+    if not search:
+        search = ""
+        redirect(url_for('index'))
     return render_template("search.html", search=search)
 
 @app.route("/log-in", methods=["GET", "POST"])
