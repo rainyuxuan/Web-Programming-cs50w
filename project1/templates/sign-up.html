@@ -10,15 +10,15 @@
     <h1> Create an Account </h1>
     <form action="{{ url_for('sign_up') }}" method="post">
         <div class="form-group col mb-0">
-            <input name="username" type="text" class="account form-control my-1" placeholder="Username">
-            <input name="password" type="password" class="account form-control my-1" placeholder="Password">
-            <input name="confirm" type="password" class="account form-control my-1" placeholder="Confirm Password">
-            <button type="submit" class="btn btn-dark account my-1">Sign Up</button>
+            <input name="username" type="text" class="account input form-control my-2" placeholder="Username">
+            <input name="password" type="password" class="account input form-control my-2" placeholder="Password">
+            <input name="confirm" type="password" class="account input form-control my-2" placeholder="Confirm Password">
+            <button type="submit" class="btn btn-dark account my-2">Sign Up</button>
         </div>
-        
+
     </form>
     {% if error %}
-    <div class="alert alert-warning my-1" role="alert">
+    <div class="alert alert-warning my-2" role="alert">
         {{error}}
     </div>
     {% endif %}

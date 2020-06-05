@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+{% block title %}
+    Libroj: title
+{% endblock %}
+{% block style %}
+<style>
+    h2 {
+        font-weight: bold;
+        font-size: xx-large;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .comment, .comment:focus{
+        border-width: 0;
+
+        border-radius: 6px;
+        background: #e0d3af;
+        box-shadow: inset 3px 3px 7px #bcb193, 
+                    inset -3px -3px 7px #fff5cb;
+    }
+    
+    #rating{
+        width: 10em;
+    }
+
+    #content, .comment-text{
+        width: 60em;
+        border-radius: 6px;
+    }
+    #content{
+        height: 6em;
+    }
+
+    #submitButton{
+        border-width: 0;
+        
+        border-radius: 6px;
+        background: linear-gradient(145deg, #f0e2bb, #cabe9e);
+        box-shadow:  3px 3px 7px #bcb193, 
+                    -3px -3px 7px #fff5cb;
+    }
+
+</style>
+{% endblock %}
+{% block body %}
+<!-- main content -->
+<div class="container d-flex flex-column mt-3">
+    <form class="form-inline my-0" action="{{ url_for('search') }}" method="post">
+        <input class="search input form-control mr-sm-2" name="search" type="search" placeholder={{search}} id="search-bar" style="width: 80%;">
+        <button class="btn search btn-dark my-1" id="search-btn" type="submit">Search</button>
+    </form>
+    <hr>
+    <div class="container d-flex flex-column mt-0">
+        <div class="container d-flex flex-column mb-1" id="bookDiv">
+            <h2>title <span class="badge badge-dark">average_score</span> </h2>
+            <ul style="padding-left: 2em;">
+                <li><strong>Author: </strong><span>author</span></li>
+                <li><strong>Publication Year: </strong><span>year</span></li>
+                <li><strong>ISBN: </strong><span>isbn</span></li>
+            </ul>
+        </div>
+        <div class="container d-flex flex-column my-2" id="reviewDiv">
+            <h3>Book Reviews (review_count)</h3>
+            <form>
+                <div class="form-group my-1">
+                    <input type="number" class="form-control comment my-2" id="rating" placeholder="Rating: 1 ~ 5">
+                    <textarea type="text" class="form-control comment my-2" id="content" placeholder="Please leave some comment!" rows="5"> </textarea>
+                </div>
+                <button class="btn search btn-light mt-3 my-sm-0" id="submitButton" type="submit">Submit Comment!</button>
+            </form>
+            <div class="my-2">
+                <ul style="padding-top: 1em;">
+                    <li>
+                        <strong>review_username<span class="badge badge-dark">5</span></strong>
+                        <br/>
+                        <textarea readonly disabled class="comment comment-text" rows="5">review_content </textarea>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

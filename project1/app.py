@@ -34,6 +34,10 @@ def search():
         redirect(url_for('index'))
     return render_template("search.html", search=search)
 
+@app.route("/book")
+def book():
+    return render_template("book.html")
+
 @app.route("/log-in", methods=["GET", "POST"])
 def log_in():
     error = None
