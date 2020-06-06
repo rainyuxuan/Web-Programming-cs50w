@@ -31,4 +31,3 @@ class Book(db.Model):
     __tablename__ = "books"
     id = db.Column(db.Integer, primary_key=True)
     reviews = db.relationship("Review", backref="book", lazy=True)
-

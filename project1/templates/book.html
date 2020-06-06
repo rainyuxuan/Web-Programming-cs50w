@@ -63,7 +63,7 @@
     <hr>
     <div class="container d-flex flex-column mt-0">
         <div class="container d-flex flex-column mb-1" id="bookDiv">
-            <h2>{{book.title}} <span class="badge badge-dark">average_score</span> </h2>
+            <h2>{{book.title}} <span class="badge badge-dark ml-1">{{average_rating}}</span> </h2>
             <ul style="padding-left: 2em;">
                 <li><strong>Author: </strong><span>{{book.author}}</span></li>
                 <li><strong>Publication Year: </strong><span>{{book.year}}</span></li>
@@ -71,8 +71,8 @@
             </ul>
         </div>
         <div class="container d-flex flex-column my-2" id="reviewDiv">
-            <h3>Book Reviews (review_count)</h3>
-            <form action="{{ url_for('search') }}" method="post">
+            <h3>Book Reviews ({{ratings_count}})</h3>
+            <form action="{{ url_for('book', isbn=book.isbn) }}" method="post">
                 <div class="form-group my-1">
                     <input name="rating" type="number" class="form-control comment my-2" id="rating" placeholder="Rating: 1 ~ 5">
                     <textarea name="content" type="text" class="form-control comment my-2" id="content" placeholder="Please leave some comment!" rows="5"> </textarea>
@@ -83,7 +83,7 @@
                 <ul style="padding-top: 1em;">
                     {% for review in reviews %}
                     <li>
-                        <strong>{{review.username}}<span class="badge badge-dark">{{review.rating}}</span></strong>
+                        <strong>{{review.username}}<span class="badge badge-dark ml-1">{{review.rating}}</span></strong>
                         <br/>
                         <textarea readonly disabled class="comment comment-text" rows="5" style="padding: 1em;">{{review.content}} </textarea>
                     </li>

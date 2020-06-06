@@ -1,4 +1,5 @@
 import os
+from pip._vendor import requests
 
 from flask import Flask, session, render_template, request, redirect, url_for
 from flask_session import Session
@@ -16,6 +17,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+USER = None
 # Set up database
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
@@ -36,23 +38,41 @@ def search():
         results = db.execute("SELECT * FROM books WHERE title LIKE :search OR author LIKE :search OR isbn LIKE :search", {"search": f"%{search}%"}).fetchall()
     return render_template("search.html", search=search, results=results)
 
-# @app.route("/book/<string:isbn>")
-# def book(isbn):
 
 @app.route("/book/<string:isbn>", methods=["GET", "POST"])
 def book(isbn):
+    # if not session['user']:
+    #     return redirect(url_for('log_in'))
     book = db.execute("SELECT * FROM books WHERE isbn = :isbn", {"isbn": isbn}).fetchone()
     if book is None:
         return "404, cannot find book"
     if request.method == "POST":
-        id = book.id
+        book_id = book.id
+        try:
+            user_id = session['user'].id 
+        except:
+            return redirect(url_for('log_in'))
+        rating = request.form.get("rating")
+        content = request.form.get("content")
+        if db.execute("SELECT * FROM reviews WHERE book_id= :book_id AND user_id= :user_id", {"user_id": user_id, "book_id": book_id}).fetchone() is not None:
+            db.execute("UPDATE reviews SET rating= :rating WHERE book_id= :book_id AND user_id= :user_id", {"user_id": user_id, "book_id": book_id, "rating": rating})
+            db.execute("UPDATE reviews SET content= :content WHERE book_id= :book_id AND user_id= :user_id", {"user_id": user_id, "book_id": book_id, "content": content})
+        else:
+            db.execute("INSERT INTO reviews (user_id, book_id, rating, content) VALUES (:user_id, :book_id, :rating, :content)", {"user_id": user_id, "book_id": book_id, "rating": rating, "content": content})
     reviews = db.execute("SELECT * FROM reviews JOIN users ON users.id = reviews.user_id WHERE book_id = :id", {"id": book.id}).fetchall()
-    
-    return render_template("book.html", book=book, reviews=reviews)
+    db.commit()
+
+    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "oyGvliX30gY1vmzF6pbtw", "isbns": isbn})
+    data = res.json()
+    ratings_count = data['books'][0]["ratings_count"]
+    average_rating = data['books'][0]["average_rating"]
+
+    return render_template("book.html", book=book, reviews=reviews, ratings_count=ratings_count, average_rating=average_rating)
 
 @app.route("/log-in", methods=["GET", "POST"])
 def log_in():
     error = None
+    session.clear()
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
@@ -62,8 +82,10 @@ def log_in():
         elif db.execute("SELECT username FROM users WHERE username = :username", {"username": username}).fetchone() is None:
             error = "Cannot find your account!"
         else:
-            correct = db.execute("SELECT password FROM users WHERE username = :username", {"username": username}).fetchone()[0]
-            if correct == password:
+            USER = db.execute("SELECT * FROM users WHERE username = :username", {"username": username}).fetchone()
+            db.commit()
+            if password == USER.password:
+                session["user"] = USER
                 return redirect(url_for('index'))
             else: 
                 error = "Username and password did not match!"
@@ -90,3 +112,9 @@ def sign_up():
             return redirect(url_for('log_in'))
 
     return render_template("sign-up.html", error=error)
+
+@app.route("/log-out")
+def log_out():
+    USER = None
+    session.clear()
+    return redirect("/")

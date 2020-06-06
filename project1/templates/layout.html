@@ -36,6 +36,7 @@
             font-size: x-large;
             font-weight: bolder;
         }
+
         
         .search {
             border-radius: 0;
@@ -50,7 +51,7 @@
             border-width: 0;
             width: 25em;
         }
-        
+
         .account,
         .input {
             border-radius: 0;
@@ -82,9 +83,13 @@
                     </li>
                 </ul>
                 <span class="navbar-text">
-                    <!-- <a id="log-in" href="{{ url_for('log_in') }}">Log-in</a> |  -->
-                    <a id="log-in" href="{{ url_for('log_in') }}"><button class="btn btn-outline-light mr-1">Log-in</button></a>  
-                    <a id="sign-up" href="{{ url_for('sign_up') }}"> Sign-up</a>
+                    {% if session.user %}
+                        <a class="mr-1 username" href="#">{{session.user.username}}</a>
+                        <a id="log-out" href="{{ url_for('log_out') }}"><button class="btn btn-outline-light mr-1">Log-out</button></a>  
+                    {% else %}
+                        <a id="log-in" href="{{ url_for('log_in') }}"><button class="btn btn-outline-light mr-1">Log-in</button></a>  
+                        <a id="sign-up" href="{{ url_for('sign_up') }}"> Sign-up</a>
+                    {% endif %}
                 </span>
             </div>
         </nav>
