@@ -1,7 +1,7 @@
 import os
 from pip._vendor import requests
 
-from flask import Flask, session, render_template, request, redirect, url_for
+from flask import Flask, session, render_template, request, redirect, url_for, jsonify
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -118,3 +118,26 @@ def log_out():
     USER = None
     session.clear()
     return redirect("/")
+
+@app.route("/api/<string:isbn>")
+def review_api(isbn):
+    """Return details about a single flight."""
+
+    # Make sure flight exists.
+    book = db.execute("SELECT * FROM books WHERE isbn = :isbn", {'isbn': isbn}).fetchone()
+    if book is None:
+        return jsonify({"error": "Invalid isbn"}), 404
+
+    # Get all passengers.
+    reviews = db.execute("SELECT * FROM reviews WHERE book_id = :book_id", {'book_id': book.id}).fetchall()
+    comments = []
+    for review in reviews:
+        username = db.execute("SELECT username FROM users WHERE id = :user_id", {"user_id": review.user_id}).fetchone()[0]
+        comments.append(f"{username}({review.rating}): {review.content}")
+    return jsonify({
+            "title": book.title,
+            "author": book.author,
+            "publication year": book.year,
+            "isbn": book.isbn,
+            "reviews": comments
+        })
