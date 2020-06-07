@@ -4,7 +4,6 @@
 - Personal webpage
 - HTML+CSS with SASS
 
----
 ### Project 1
 ---
 - Libroj: Book Review Website
