@@ -1,5 +1,5 @@
 body {
-  background-color: #efffcb;
+  background-color: #cbffdf;
 }
 
 header {
@@ -14,7 +14,10 @@ a:hover {
 header {
   -webkit-backdrop-filter: blur(50px);
           backdrop-filter: blur(50px);
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.2);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
   z-index: 50;
   position: -webkit-sticky;
   position: sticky;
