@@ -29,3 +29,14 @@ USER = None
 @app.route("/")
 def index():
     return render_template('index.html')
+
+
+# @app.route("/send", methods=["POST"])
+# def send():
+#     message = request.form.get("messageInput")
+#     name = session['user'].name
+
+
+@socketio.on("send message")
+def send(message):
+    emit('announce message', message, broadcast=True)
