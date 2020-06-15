@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
+
+    <title>Stelamaso</title>
+    <style>
+        /*
+        $light: #F2F2EE;
+        $light-accent: #6EAE91;
+        $brand: #F84343;
+        $dark-accent: #3F7687;
+        $dark: #252628;
+        $darkgray: #33363a;
+        $gray: #70757d;
+        $lightgray: #D3D3D3;
+        */
+        
+        #navSection {
+            height: 100%;
+            width: 25%;
+            position: fixed;
+            z-index: 50;
+            top: 0;
+            left: 0;
+            background-color: #33363a;
+            overflow: hidden;
+            padding-top: 20px;
+            padding-left: 2em;
+        }
+        
+        #chatSection {
+            height: 100%;
+            width: 75%;
+            position: fixed;
+            z-index: 0;
+            top: 0;
+            right: 0;
+            background-color: #F2F2EE;
+            overflow-x: hidden;
+            padding-top: 20px;
+            padding-left: 2em;
+            overflow: hidden;
+        }
+        
+        #brand {
+            width: 100%;
+            background-color: #33363a;
+            display: flex;
+            flex-direction: row;
+            justify-content: start;
+            align-items: center;
+        }
+        
+        #brand h1 {
+            color: #6EAE91;
+        }
+        
+        hr {
+            border-color: #33363a;
+        }
+        
+        #channels {
+            height: 25em;
+            width: 20em;
+            overflow: hidden;
+        }
+        
+        .channels-scroll {
+            overflow-y: auto;
+            overflow-x: hidden;
+            height: 25em;
+            width: 22em;
+        }
+        
+        #navSection h2,
+        h4,
+        h6,
+        li {
+            color: #70757d;
+        }
+        
+        ul {
+            list-style-type: none;
+            padding-left: 2em;
+        }
+        
+        #newChannelBtn {
+            display: flex;
+            flex-direction: row;
+            justify-content: start;
+            align-items: center;
+            padding: 0.7em;
+            position: absolute;
+            bottom: 5.2em;
+            height: 3.5em;
+            width: 60%;
+            background-color: #252628;
+            border-radius: 50px;
+            border-width: 0;
+            outline: none !important;
+            /* button text*/
+            color: #70757d;
+            font-weight: 600;
+            text-align: center;
+            /* neomorph */
+            background: #33363a;
+            box-shadow: 5px 5px 8px #282a2d, -5px -5px 8px #3e4247
+        }
+        
+        #newChannelBtn:active {
+            box-shadow: inset 5px 5px 8px #282a2d, inset -5px -5px 8px #3e4247;
+        }
+        
+        #userDisplay {
+            display: flex;
+            flex-direction: row;
+            justify-content: start;
+            align-items: center;
+            padding: 0.7em;
+            position: absolute;
+            bottom: 1em;
+            height: 3.5em;
+            width: 75%;
+            background-color: #252628;
+            border-radius: 50px;
+        }
+        
+        #userDisplay h6 {
+            margin-left: 0.6em;
+            margin-right: 0.6em;
+            font-size: large;
+            font-weight: 600;
+            margin-top: 3%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="navSection">
+        <div id="brand">
+            <img src="https://img.icons8.com/color/48/000000/galaxy.png" />
+            <h1>STELAMASO</h1>
+        </div>
+        <hr>
+        <div id="channels">
+            <h2>Channels</h2>
+            <div class="channels-scroll">
+                <ul class="channel-list">
+                    <li>First Channel</li>
+                    <li>Second Channel</li>
+                    <li>First Channel</li>
+                    <li>Second Channel</li>
+                    <li>First Channel</li>
+                    <li>Second Channel</li>
+                </ul>
+                <h4>Explore Channels</h4>
+                <ul>
+                    <li>First Channel</li>
+                    <li>Second Channel</li>
+                    <li>First Channel</li>
+                    <li>Second Channel</li>
+                    <li>First Channel</li>
+                    <li>Second Channel</li>
+                    <li>First Channel</li>
+                    <li>Second Channel</li>
+                    <li>First Channel</li>
+                    <li>Second Channel</li>
+                    <li>First Channel</li>
+                    <li>Second Channel</li>
+                    <li>First Channel</li>
+                    <li>Second Channel</li>
+                </ul>
+            </div>
+        </div>
+
+        <button id="newChannelBtn"><img src="https://img.icons8.com/fluent/48/000000/full-moon.png" style="margin-right:0.5em;"/>NEW CHANNEL</button>
+
+
+        <div id="userDisplay">
+            <img src="https://img.icons8.com/color/48/000000/astronaut-helmet.png" />
+            <h6>Astronaut Alpha</h6>
+            <img src="https://img.icons8.com/officexs/30/000000/export.png" style="position: absolute; right:-2.5em;" />
+        </div>
+    </div>
+    <div id="chatSection">
+        chat
+    </div>
+
+    <!-- Bootstrap js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <!-- <script src="{{ url_for('static',filename='javascriptFileName.js') }}"></script> -->
+</body>
+
+</html>

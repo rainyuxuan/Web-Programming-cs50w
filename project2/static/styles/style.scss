@@ -1,0 +1,14 @@
+$light: #F2F2EE;
+$light-accent: #6EAE91;
+$brand: #F84343;
+$dark-accent: #3F7687;
+$dark: #252628;
+#nav-section,
+#chat-section {
+    background-color: $dark-accent;
+}
+
+#nav-section {
+    -webkit-backdrop-filter: blur(50px);
+    backdrop-filter: blur(50px);
+}

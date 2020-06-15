@@ -1,0 +1,10 @@
+#nav-section,
+#chat-section {
+  background-color: #3F7687;
+}
+
+#nav-section {
+  -webkit-backdrop-filter: blur(50px);
+  backdrop-filter: blur(50px);
+}
+/*# sourceMappingURL=style.css.map */
