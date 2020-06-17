@@ -7,7 +7,15 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <!-- <link rel="stylesheet" href="style.css"> -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
-    <script src="{{ url_for('static', filename='index.js')}}"></script>
+    <!-- <script src="{{ url_for('static', filename='index.js')}}"></script> -->
+    <!-- Bootstrap js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <!-- Handlebars js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+    <!-- My JS -->
+    <script src="{{ url_for('static',filename='index.js') }}"></script>
     <title>Stelamaso</title>
     <style>
         /*
@@ -23,6 +31,57 @@
         
         button {
             outline: none !important;
+        }
+        
+        .back-cover {
+            background-color: rgba(30, 30, 30, .2);
+            backdrop-filter: blur(20px);
+            position: fixed;
+            z-index: 90;
+            height: 100%;
+            width: 100%;
+            left: 0;
+            top: 0;
+        }
+        
+        #modalDisplayName {
+            position: fixed;
+            z-index: 100;
+            width: 30%;
+            height: 15%;
+            background-color: #33363a;
+            border: none;
+            left: 35%;
+            top: 42.5%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
+            border-radius: 10px;
+            padding: 1em;
+        }
+        
+        #modalDisplayName input,
+        #modalDisplayName button {
+            border: none;
+            outline: none !important;
+            margin: auto;
+            height: 2.5em;
+            background-color: #252628;
+            padding-left: 1em;
+            padding-right: 1em;
+            border-radius: 10px;
+            color: #F2F2EE;
+        }
+        
+        #modalDisplayName input {
+            width: 15em;
+            color: #F2F2EE;
+        }
+        
+        #modalDisplayName button:active,
+        #modalDisplayName button:hover {
+            background-color: #3e4247;
         }
         
         #navSection {
@@ -198,8 +257,8 @@
             margin: 0;
         }
         
-        .message-other,
-        .message-user {
+        .other,
+        .mine {
             height: auto;
             padding: 1em;
             margin: 1em;
@@ -243,32 +302,32 @@
         }
         /* other message */
         
-        .message-other .message-info {
+        .other .message-info {
             flex-direction: row;
         }
         
-        .message-other .message-info h6 {
+        .other .message-info h6 {
             margin-right: 1em;
             color: #3F7687;
         }
         
-        .message-other .message-content {
+        .other .message-content {
             background-color: #3F7687;
             margin-left: 1.5em;
             margin-right: auto;
         }
         /* User message*/
         
-        .message-user .message-info {
+        .mine .message-info {
             flex-direction: row-reverse;
         }
         
-        .message-user .message-info h6 {
+        .mine .message-info h6 {
             margin-left: 1em;
             color: #6EAE91;
         }
         
-        .message-user .message-content {
+        .mine .message-content {
             background-color: #6EAE91;
             margin-left: auto;
             margin-right: 1.5em;
@@ -307,6 +366,158 @@
             outline: none !important;
         }
     </style>
+
+    <!-- Display Name Modal Template-->
+    <script id="modalDisplayNameTemplate" type="text/template">
+        <div class="back-cover"></div>
+        <div id="modalDisplayName">
+            <input type="text" id="inputDisplayName" placeholder="Enter your display name" required maxlength='15' minlength="2">
+            <button id="submitDisplayNameBtn" type='submit' autofocus>CONFIRM</button>
+            <!-- <button id="cancelDisplayNameBtn" type='cancel'>Cancel</button> -->
+        </div>
+    </script>
+
+    <!-- Channel List Item Template -->
+    <script id="channelListItemTemplate" type="text/template">
+        <li><button class="channelBtn">#{{ id }} {{ name }} </button></li>
+    </script>
+
+    <!-- Other's Message Template -->
+    <script id="messageOtherTemplate" type="text/template">
+        <li>
+            <div class="message other">
+                <div class="message-info">
+                    <img src="https://img.icons8.com/color/30/000000/star-wars-empire-ship.png" style="margin-bottom: 0.4em; margin-right:0.6em;" />
+                    <h6>{{ messageName }}</h6>
+                    <h6>{{ messageTime }}</h6>
+                </div>
+                <div class="message-content">
+                    <p>{{ messageContent }}</p>
+                </div>
+            </div>
+        </li>
+    </script>
+
+    <!-- My message Template -->
+    <script id="messageOtherTemplate" type="text/template">
+        <li>
+            <div class="message mine">
+                <div class="message-info">
+                    <img src="https://img.icons8.com/color/30/000000/star-wars-rebellion-ship.png" style="margin-bottom: 0.4em; margin-left:0.6em;" />
+                    <h6>{{ messageName }}</h6>
+                    <h6>{{ messageTime }}</h6>
+                </div>
+                <div class="message-content">
+                    <p>{{ messageContent }}</p>
+                </div>
+            </div>
+        </li>
+    </script>
+    <!-- Main js -->
+    <script>
+        const displayNameModal = Handlebars.compile(document.querySelector('#modalDisplayNameTemplate').innerHTML);
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOM Content loaded");
+            // load display name modal
+            //const Handlebars = require("handlebars");
+
+            //document.body.innerHTML += displayNameModel;
+            document.body.innerHTML += (displayNameModal({
+                'name': 'Enter your display name'
+            }));
+            console.log("auto-loaded display name");
+
+            // DisplayNameModal: submit display name btn clicked => update the name
+            document.querySelector('#submitDisplayNameBtn').onclick = () => {
+                updateDisplayName(document.querySelector('#inputDisplayName').value);
+                console.log('displayNameModal submitted!');
+            }
+
+            // DisplayNameModal: cancel btn clicked => modal disappear
+            document.querySelector('#cancelDisplayNameBtn').onclick = () => {
+                document.querySelector("#modalDisplayName").remove();
+                document.querySelector(".back-cover").remove();
+                console.log('displayNameModal cancelled');
+            }
+
+            // nav section: logout btn clicked => show displayNameModal
+            document.querySelector('#logoutBtn').onclick = () => {
+                console.log('LogoutBtn Clicked');
+                const oldName = document.querySelector('#username').innerHTML;
+                document.body.innerHTML += displayNameModal({
+                    'name': oldName
+                });
+                console.log('displayNameModal out');
+            };
+
+            // Connect to websocket
+            var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+            socket.on('connect', () => {
+                // Sending a message
+                document.querySelector('#messageInputForm').onsubmit = () => {
+                    let messageContent = document.querySelector('#messageInput').value;
+                    let messageName = document.querySelector('#username').textContent;
+                    let messageTime = getCurrentTime();
+
+                    socket.emit('send message', {
+                        'channel': document.querySelector('#channelName').dataset.id,
+                        'content': messageContent,
+                        'name': messageName,
+                        'time': messageTime
+                    });
+
+
+                    // request.open('POST', '/send');
+
+                    // request.onload = () =>{
+                    //     const message = JSON.parse(request.responseText);
+
+                    //     const name = message.name;
+                    //     const time = message.time;
+                    //     const content = message.content;
+                    // };
+                };
+            });
+
+            socket.on('announce message', message => {
+                const li = document.createElement('li');
+                li.innerHTML = `Vote recorded: ${data.selection}`;
+                document.querySelector('#votes').append(li);
+            });
+
+        });
+
+        function getCurrentTime() {
+            var time = new Date();
+
+            var t = {
+                'year': time.getFullYear(),
+                'month': time.getMonth(),
+                'date': time.getDate(),
+                'hour': time.getHours(),
+                'minute': time.getMinutes(),
+                'second': time.getSeconds(),
+            }
+            t['string'] = time.toLocaleDateString() + " " + t['hour'] + ':' + t['minute'] + ':' + t['second'];
+
+            return t;
+        }
+
+        function updateDisplayName(newName) {
+            document.querySelector('#username').innerHTML = newName;
+            console.log('changed Name')
+            document.querySelector("#modalDisplayName").remove();
+            document.querySelector(".back-cover").remove();
+        }
+        /*function sendMessageSubmit() {
+                    let data = document.querySelector('#messageInput').value;
+                    console.log('SUBMIT!');
+                    console.log(data);
+                    document.querySelector('#messageInput').value = "";
+                    console.log(document.querySelector('#messageInput').value);
+                }*/
+    </script>
 </head>
 
 <body>
@@ -319,24 +530,24 @@
         <div id="channels">
             <h2>Stars</h2>
             <div class="channels-scroll">
-                <ul class="channel-list">
-                    <li><button class="channelBtn">Universo</button></li>
-                    <li><button class="channelBtn">Lakta Vojo</button></li>
-                    <li><button class="channelBtn">Suna Stelo</button></li>
-                    <li><button class="channelBtn">Pac-Konsilio</button></li>
-                    <li><button class="channelBtn">Planeda Alianco</button></li>
-                    <li><button class="channelBtn">Karbon-baso</button></li>
+                <ul class="channel-list" id="favChannels">
+                    <li><button class="channelBtn">#0000 Universo</button></li>
+                    <li><button class="channelBtn">#0001 Lakta Vojo</button></li>
+                    <li><button class="channelBtn">#1101 Suna Stelo</button></li>
+                    <li><button class="channelBtn">#2001 Pac-Konsilio</button></li>
+                    <li><button class="channelBtn">#3001 Planeda Alianco</button></li>
+                    <li><button class="channelBtn">#3002 Karbon-baso</button></li>
                 </ul>
                 <h4>Explore Stars</h4>
-                <ul class="channel-list" style="padding-bottom: 3em;">
-                    <li><button class="channelBtn">Metala Kompanio</button></li>
-                    <li><button class="channelBtn">Stela Justeco</button></li>
-                    <li><button class="channelBtn">Stelo Ruĝa</button></li>
-                    <li><button class="channelBtn">Stelo Komunisma</button></li>
-                    <li><button class="channelBtn">Stelo Anarkiisma</button></li>
-                    <li><button class="channelBtn">Stela Ateisto</button></li>
-                    <li><button class="channelBtn">Stelo Agnostika</button></li>
-                    <li><button class="channelBtn">Stela Revoluciisto</button></li>
+                <ul class="channel-list" id="exploreChannels" style="padding-bottom: 3em;">
+                    <li><button class="channelBtn">#3004 Metala Kompanio</button></li>
+                    <li><button class="channelBtn">#1112 Stela Justeco</button></li>
+                    <li><button class="channelBtn">#1201 Stelo Ruĝa</button></li>
+                    <li><button class="channelBtn">#1202 Stelo Komunisma</button></li>
+                    <li><button class="channelBtn">#1233 Stelo Anarkiisma</button></li>
+                    <li><button class="channelBtn">#1598 Stela Ateisto</button></li>
+                    <li><button class="channelBtn">#1502 Stelo Agnostika</button></li>
+                    <li><button class="channelBtn">#1533 Stela Revoluciisto</button></li>
                 </ul>
             </div>
         </div>
@@ -347,7 +558,7 @@
         <div id="userDisplay">
             <img src="https://img.icons8.com/color/48/000000/astronaut-helmet.png" />
             <h6 id="username">Astronaut Alpha</h6>
-            <button id="logoutBtn" onclick="console.log('exit user')"><img src="https://img.icons8.com/officexs/30/000000/export.png" /></button>
+            <button id="logoutBtn"><img src="https://img.icons8.com/officexs/30/000000/export.png" /></button>
         </div>
     </div>
 
@@ -362,7 +573,7 @@
             <ul id="messageList">
                 <!-- One Other Message -->
                 <li>
-                    <div class="message-other">
+                    <div class="message other">
                         <div class="message-info">
                             <img src="https://img.icons8.com/color/30/000000/star-wars-empire-ship.png" style="margin-bottom: 0.4em; margin-right:0.6em;" />
                             <h6>Spaceman Beta</h6>
@@ -379,7 +590,7 @@
                 <!-- /One message -->
                 <!-- One Mine Message -->
                 <li>
-                    <div class="message-user">
+                    <div class="message mine">
                         <div class="message-info">
                             <img src="https://img.icons8.com/color/30/000000/star-wars-rebellion-ship.png" style="margin-bottom: 0.4em; margin-left:0.6em;" />
                             <h6>Astronaut Alpha</h6>
@@ -395,11 +606,6 @@
                 <!-- /One Mine message -->
 
             </ul>
-
-
-
-
-
         </div>
 
         <!-- Input message -->
@@ -407,23 +613,14 @@
             <input type="text" id="messageInput">
             <button id="sendBtn" type="submit"><img src="https://img.icons8.com/nolan/48/rfid-signal.png" /></button>
         </form>
+
+        <!-- display name modal -->
+
     </div>
 
-    <!-- Bootstrap js -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-    <!-- <script src="{{ url_for('static',filename='javascriptFileName.js') }}"></script> -->
-    <script src="../static/index.js"></script>
-    <!-- <script>
-        function sendMessageSubmit() {
-            let data = document.querySelector('#messageInput').value;
-            console.log('SUBMIT!');
-            console.log(data);
-            document.querySelector('#messageInput').value = "";
-            console.log(document.querySelector('#messageInput').value);
-        }
-    </script> -->
+
+
+
 </body>
 
 </html>
