@@ -1,16 +1,59 @@
-/*
-        $light: #F2F2EE;
-        $light-accent: #6EAE91;
-        $brand: #F84343;
-        $dark-accent: #3F7687;
-        $dark: #252628;
-        $darkgray: #33363a;
-        $gray: #70757d;
-        $lightgray: #D3D3D3;
-        */
-
 button {
     outline: none !important;
+}
+
+.back-cover {
+    background-color: rgba(30, 30, 30, .2);
+    backdrop-filter: blur(20px);
+    position: fixed;
+    z-index: 90;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+}
+
+#modalDisplayName {
+    position: fixed;
+    z-index: 100;
+    width: 30%;
+    height: 15%;
+    background-color: #33363a;
+    border: none;
+    left: 35%;
+    top: 42.5%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 10px;
+    padding: 1em;
+}
+
+#modalDisplayName input,
+#modalDisplayName button {
+    border: none;
+    outline: none !important;
+    margin: auto;
+    height: 2.5em;
+    background-color: #252628;
+    padding-left: 1em;
+    padding-right: 1em;
+    border-radius: 10px;
+    color: #F2F2EE;
+}
+
+#modalDisplayName input {
+    width: 70%;
+}
+
+#modalDisplayName button {
+    width: 25%;
+}
+
+#modalDisplayName button:active,
+#modalDisplayName button:hover {
+    background-color: #3e4247;
 }
 
 #navSection {
@@ -37,7 +80,7 @@ button {
     background-color: #252628;
     overflow-x: hidden;
     /*padding-top: 20px;
-        padding-left: 2em;*/
+      padding-left: 2em;*/
     overflow: hidden;
 }
 
@@ -186,8 +229,8 @@ ul {
     margin: 0;
 }
 
-.message-other,
-.message-user {
+.other,
+.mine {
     height: auto;
     padding: 1em;
     margin: 1em;
@@ -233,16 +276,16 @@ p {
 
 /* other message */
 
-.message-other .message-info {
+.other .message-info {
     flex-direction: row;
 }
 
-.message-other .message-info h6 {
+.other .message-info h6 {
     margin-right: 1em;
     color: #3F7687;
 }
 
-.message-other .message-content {
+.other .message-content {
     background-color: #3F7687;
     margin-left: 1.5em;
     margin-right: auto;
@@ -251,16 +294,16 @@ p {
 
 /* User message*/
 
-.message-user .message-info {
+.mine .message-info {
     flex-direction: row-reverse;
 }
 
-.message-user .message-info h6 {
+.mine .message-info h6 {
     margin-left: 1em;
     color: #6EAE91;
 }
 
-.message-user .message-content {
+.mine .message-content {
     background-color: #6EAE91;
     margin-left: auto;
     margin-right: 1.5em;

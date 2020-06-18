@@ -6,6 +6,61 @@ $dark: #252628;
 $darkgray: #33363a;
 $gray: #70757d;
 $lightgray: #D3D3D3;
+button {
+    outline: none !important;
+}
+
+.back-cover {
+    background-color: rgba(30, 30, 30, .2);
+    backdrop-filter: blur(20px);
+    position: fixed;
+    z-index: 90;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+}
+
+#modalDisplayName {
+    position: fixed;
+    z-index: 100;
+    width: 30%;
+    height: 15%;
+    background-color: #33363a;
+    border: none;
+    left: 35%;
+    top: 42.5%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 10px;
+    padding: 1em;
+}
+
+#modalDisplayName input,
+#modalDisplayName button {
+    border: none;
+    outline: none !important;
+    margin: auto;
+    height: 2.5em;
+    background-color: #252628;
+    padding-left: 1em;
+    padding-right: 1em;
+    border-radius: 10px;
+    color: #F2F2EE;
+}
+
+#modalDisplayName input {
+    width: 15em;
+    color: #F2F2EE;
+}
+
+#modalDisplayName button:active,
+#modalDisplayName button:hover {
+    background-color: #3e4247;
+}
+
 #navSection {
     height: 100%;
     width: 25%;
@@ -36,7 +91,6 @@ $lightgray: #D3D3D3;
 
 #brand {
     width: 100%;
-    background-color: #33363a;
     display: flex;
     flex-direction: row;
     justify-content: start;
@@ -73,7 +127,27 @@ li {
 
 ul {
     list-style-type: none;
+}
+
+#navSection .channel-list {
+    padding-left: 0;
+}
+
+.channelBtn {
+    height: 2em;
+    width: 75%;
+    background-color: transparent;
+    color: #70757d;
+    text-align: start;
     padding-left: 2em;
+    margin: 0;
+    border: none;
+    outline: none !important;
+}
+
+.channelBtn:hover,
+.channelBtn:active {
+    background-color: #252628;
 }
 
 #newChannelBtn {
@@ -81,8 +155,9 @@ ul {
     flex-direction: row;
     justify-content: start;
     align-items: center;
-    padding: 0.7em;
     position: absolute;
+    /*padding: 0.7em;*/
+    padding-left: 0.7em;
     bottom: 5.2em;
     height: 3.5em;
     width: 60%;
@@ -117,12 +192,19 @@ ul {
     border-radius: 50px;
 }
 
-#userDisplay h6 {
+#userDisplay #username {
     margin-left: 0.6em;
     margin-right: 0.6em;
     font-size: large;
     font-weight: 600;
     margin-top: 3%;
+}
+
+#userDisplay #logoutBtn {
+    position: absolute;
+    right: -2.7em;
+    background-color: transparent;
+    border: none;
 }
 
 #messageTitleContainer {
@@ -139,10 +221,99 @@ ul {
 
 #messageContainer {
     width: 102%;
-    height: 65%;
-    background-color: #252628;
+    height: 90%;
     overflow-x: hidden;
     overflow-y: scroll;
+    padding-left: 1em;
+    padding-right: 4em;
+    padding-bottom: 5.5em;
+}
+
+#messageList {
+    padding: 0;
+    margin: 0;
+}
+
+.other,
+.mine {
+    height: auto;
+    padding: 1em;
+    margin: 1em;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.message-info {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.message-info h6 {
+    font-weight: 600;
+    font-size: large;
+}
+
+.message-content {
+    height: auto;
+    width: auto;
+    max-width: 70%;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    border-width: 0;
+    border-radius: 20px;
+}
+
+.message-content p {
+    padding: 0;
+    margin: 0;
+    font-size: larger;
+    color: #252628;
+}
+
+p {
+    overflow-wrap: break-word;
+}
+
+
+/* other message */
+
+.other .message-info {
+    flex-direction: row;
+}
+
+.other .message-info h6 {
+    margin-right: 1em;
+    color: #3F7687;
+}
+
+.other .message-content {
+    background-color: #3F7687;
+    margin-left: 1.5em;
+    margin-right: auto;
+}
+
+
+/* User message*/
+
+.mine .message-info {
+    flex-direction: row-reverse;
+}
+
+.mine .message-info h6 {
+    margin-left: 1em;
+    color: #6EAE91;
+}
+
+.mine .message-content {
+    background-color: #6EAE91;
+    margin-left: auto;
+    margin-right: 1.5em;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
 }
 
 #messageInputForm {
@@ -150,6 +321,7 @@ ul {
     bottom: 2.5em;
     width: 80%;
     left: 10%;
+    z-index: 20;
 }
 
 #messageInput {
@@ -163,10 +335,14 @@ ul {
     padding-right: 4.5em;
     color: #F2F2EE;
     background-color: #33363a;
-    box-shadow: 0 0 10px #6EAE91;
+    box-shadow: 0 0 10px #F84343;
 }
 
 #sendBtn {
     position: absolute;
-    right: 0.8em;
+    right: 0.1em;
+    bottom: 0.005em;
+    background-color: transparent;
+    border: none;
+    outline: none !important;
 }

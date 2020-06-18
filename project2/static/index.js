@@ -1,34 +1,33 @@
 const displayNameModal = Handlebars.compile(document.querySelector('#modalDisplayNameTemplate').innerHTML);
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM Content loaded");
-    // load display name modal
+    
     //const Handlebars = require("handlebars");
-
-    //document.body.innerHTML += displayNameModel;
+    // show dnm after page loaded
     document.body.innerHTML += (displayNameModal({
-        'name': 'Enter your display name'
+        name: 'Enter your display name'
     }));
     console.log("auto-loaded display name");
 
-    // DisplayNameModal: submit display name btn clicked => update the name
+    // DNM: submit display name btn clicked => update the name
     document.querySelector('#submitDisplayNameBtn').onclick = () => {
         updateDisplayName(document.querySelector('#inputDisplayName').value);
         console.log('displayNameModal submitted!');
     }
 
     // DisplayNameModal: cancel btn clicked => modal disappear
-    document.querySelector('#cancelDisplayNameBtn').onclick = () => {
-        document.querySelector("#modalDisplayName").remove();
-        document.querySelector(".back-cover").remove();
-        console.log('displayNameModal cancelled');
-    }
+    // document.querySelector('#cancelDisplayNameBtn').onclick = () => {
+    //     document.querySelector("#modalDisplayName").remove();
+    //     document.querySelector(".back-cover").remove();
+    //     console.log('displayNameModal cancelled');
+    // }
 
     // nav section: logout btn clicked => show displayNameModal
     document.querySelector('#logoutBtn').onclick = () => {
         console.log('LogoutBtn Clicked');
         const oldName = document.querySelector('#username').innerHTML;
         document.body.innerHTML += displayNameModal({
-            'name': oldName
+            name: oldName
         });
         console.log('displayNameModal out');
     };
@@ -71,9 +70,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
+
+// get current time => dict{}
 function getCurrentTime() {
     var time = new Date();
-
     var t = {
         'year': time.getFullYear(),
         'month': time.getMonth(),
@@ -83,11 +83,16 @@ function getCurrentTime() {
         'second': time.getSeconds(),
     }
     t['string'] = time.toLocaleDateString() + " " + t['hour'] + ':' + t['minute'] + ':' + t['second'];
-
     return t;
 }
 
+
+// update display name
 function updateDisplayName(newName) {
+    if (newName.length < 2){
+        return;
+    }
+    localStorage['displayName'] = newName;
     document.querySelector('#username').innerHTML = newName;
     console.log('changed Name')
     document.querySelector("#modalDisplayName").remove();
