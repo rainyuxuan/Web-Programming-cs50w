@@ -19,12 +19,23 @@
 
 
     <!-- Display Name Modal Template-->
-    <script id="modalDisplayNameTemplate" type="text/template">
+    <script id="displayNameModalTemplate" type="text/template">
         <div class="back-cover"></div>
-        <div id="modalDisplayName">
+        <div id="modalDisplayName" class="modal">
+            <h5>How should Stelamaso call you?</h5>
             <input type="text" id="inputDisplayName" placeholder="{{ name }}" required maxlength='15' minlength="2">
-            <button id="submitDisplayNameBtn" type='submit' autofocus>CONFIRM</button>
+            <button id="submitDisplayNameBtn" type='submit' autofocus onclick="submitDisplayName()">CONFIRM</button>
             <!-- <button id="cancelDisplayNameBtn" type='cancel'>Cancel</button> -->
+        </div>
+    </script>
+
+    <!-- Create Channel Modal Template -->
+    <script id="createChannelModalTemplate" type="text/template">
+        <div class="back-cover"></div>
+        <div id="modalCreateChannel" class="modal">
+            <h5>Exploit a New Star</h5>
+            <input type="text" id="inputChannelName" placeholder="Name this star" required maxlength='15' minlength="2">
+            <button id="submitChannelBtn" type='submit' autofocus onclick="submitChannel()">DEPART</button>
         </div>
     </script>
 
@@ -34,7 +45,7 @@
     </script>
 
     <!-- Other's Message Template -->
-    <script id="messageOtherTemplate" type="text/template">
+    <script id="messageOfOtherTemplate" type="text/template">
         <li>
             <div class="message other">
                 <div class="message-info">
@@ -50,16 +61,16 @@
     </script>
 
     <!-- My message Template -->
-    <script id="messageOtherTemplate" type="text/template">
+    <script id="messageOfUserTemplate" type="text/template">
         <li>
             <div class="message mine">
                 <div class="message-info">
                     <img src="https://img.icons8.com/color/30/000000/star-wars-rebellion-ship.png" style="margin-bottom: 0.4em; margin-left:0.6em;" />
-                    <h6>{{ messageName }}</h6>
-                    <h6>{{ messageTime }}</h6>
+                    <h6>Astronaut Alpha</h6>
+                    <h6>Now</h6>
                 </div>
                 <div class="message-content">
-                    <p>{{ messageContent }}</p>
+                    <p>Hey Homie, What's up!</p>
                 </div>
             </div>
         </li>
@@ -101,13 +112,13 @@
             </div>
         </div>
 
-        <button id="newChannelBtn"><img src="https://img.icons8.com/fluent/48/000000/full-moon.png" style="margin-right:0.5em;"/>NEW STAR</button>
+        <button id="newChannelBtn" onclick="createChannel()"><img src="https://img.icons8.com/fluent/48/000000/full-moon.png" style="margin-right:0.5em;"/>NEW STAR</button>
 
 
         <div id="userDisplay">
             <img src="https://img.icons8.com/color/48/000000/astronaut-helmet.png" />
             <h6 id="username">Astronaut Alpha</h6>
-            <button id="logoutBtn"><img src="https://img.icons8.com/officexs/30/000000/export.png" /></button>
+            <button id="logoutBtn" onclick="logout()"><img src="https://img.icons8.com/officexs/30/000000/export.png" /></button>
         </div>
     </div>
 
@@ -158,7 +169,7 @@
         </div>
 
         <!-- Input message -->
-        <form id="messageInputForm">
+        <form id="messageInputForm" onsubmit="submitMessage()">
             <input type="text" id="messageInput">
             <button id="sendBtn" type="submit"><img src="https://img.icons8.com/nolan/48/rfid-signal.png" /></button>
         </form>
