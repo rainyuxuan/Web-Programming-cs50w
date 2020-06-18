@@ -59,9 +59,11 @@ USER = None
 
 @app.route("/")
 def index():
-    session.clear()
-    fav_channels= db.execute('SELECT * FROM channels WHERE id < 5')
-    explore_channels = db.execute('SELECT * FROM channels WHERE id > 4')
+    # session.clear()
+    print("OPEN")
+    fav_channels = db.execute('SELECT * FROM channels WHERE id < 5').fetchall()
+    explore_channels = db.execute('SELECT * FROM channels WHERE id > 4').fetchall()
+    db.commit()
     return render_template('index.html', favChannels=fav_channels, channels=explore_channels)
 
 
@@ -73,12 +75,19 @@ def index():
 
 @socketio.on("create channel")
 def create(data):
+    print('INTO SOCKET')
     channel_name = data['channel_name']
     db.execute("INSERT INTO channels (name) VALUES (:channel_name)", {"channel_name": channel_name})
-    new_channel = db.execute("SELECT * FROM channels WHERE name = :channel_name", {"channel_name": channel_name})
+    new_channel = db.execute("SELECT * FROM channels WHERE name = :channel_name", {"channel_name": channel_name}).fetchone()
+    db.commit()
     channel_id = new_channel['id']
     channel_name = new_channel['name']
-    emit("announce channel",{"channel_name":channel_name, "channel_id": channel_id}, broadcast=True)
+    print(channel_id, channel_name, new_channel)
+    emit("announce channel", {"channel_name":channel_name, "channel_id": channel_id}, broadcast=True)
 
 # @socketio.on("announce channel")
 # def announce_channel
+
+if __name__ == '__main__': 
+    socketio.run(app)
+

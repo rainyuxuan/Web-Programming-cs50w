@@ -25,56 +25,59 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log("AUTO-loaded dnm");
 
     // Connect to websocket
+    socket.on('error', function(){
+        console.log("Sorry, there seems to be an issue with the connection!");
+    });
     // var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+    socket.on('connect', () => {
 
+        console.log('socket.io is on connected')
+        // Sending a message
+        // document.querySelector('#messageInputForm').onsubmit = () => {
+        //     let messageContent = document.querySelector('#messageInput').value;
+        //     let messageName = document.querySelector('#username').textContent;
+        //     let messageTime = getCurrentTime();
+    
+        //     socket.emit('send message', {
+        //         'channel': document.querySelector('#channelName').dataset.id,
+        //         'content': messageContent,
+        //         'name': messageName,
+        //         'time': messageTime
+        //     });
+    
+    
+        //     // request.open('POST', '/send');
+    
+        //     // request.onload = () =>{
+        //     //     const message = JSON.parse(request.responseText);
+    
+        //     //     const name = message.name;
+        //     //     const time = message.time;
+        //     //     const content = message.content;
+        //     // };
+        // };
+    
+        
+    });
     
 
     // when someone create a channel, user also add this channel to list
+    socket.on('announce channel', data => {
+        const channelName = data['channel_name'];
+        const channelID = data['channel_id'];
+        console.log('RECEIVED and announcing #' + channelID + channelName);
+        const newChannel = channelListItem({'channelID': channelID, 'channelName': channelName});
+        // Add to channel list
+        document.querySelector('#exploreChannels').innerHTML += newChannel;
+        console.log('ADD '+ channelID + channelName +' to channel list');
+    });
     
 });
 
 
 ///////////////////// ON START /////////////////////
-socket.on('connect', () => {
-
-    console.log('socket.io is on connected')
-    // Sending a message
-    // document.querySelector('#messageInputForm').onsubmit = () => {
-    //     let messageContent = document.querySelector('#messageInput').value;
-    //     let messageName = document.querySelector('#username').textContent;
-    //     let messageTime = getCurrentTime();
-
-    //     socket.emit('send message', {
-    //         'channel': document.querySelector('#channelName').dataset.id,
-    //         'content': messageContent,
-    //         'name': messageName,
-    //         'time': messageTime
-    //     });
 
 
-    //     // request.open('POST', '/send');
-
-    //     // request.onload = () =>{
-    //     //     const message = JSON.parse(request.responseText);
-
-    //     //     const name = message.name;
-    //     //     const time = message.time;
-    //     //     const content = message.content;
-    //     // };
-    // };
-
-    
-});
-
-socket.on('announce channel', data=>{
-    const channelName = data['channel_name'];
-    const channelID = data['channel_id'];
-    console.log('RECEIVED and announcing #' + channelID + channelName);
-    const newChannel = channelListItem({'channelID': channelID, 'channelName': channelName});
-    // Add to channel list
-    document.querySelector('#exploreChannels').innerHTML += newChannel;
-    console.log('ADD '+ channelID + channelName +' to channel list');
-});
 
 ///////////////////// CCM MODAL /////////////////////
 
@@ -98,6 +101,7 @@ function submitChannel(){
     }
 
     // Add to server
+    console.log("going to server")
     socket.emit('create channel', {'channel_name': channelName});
     
     // const channelID = 1231;
