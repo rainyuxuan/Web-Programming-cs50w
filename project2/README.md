@@ -1,5 +1,10 @@
 # Project 2: Anonymous Async Chatroom Website: Stelamaso
 
+###Tech Implementation
+- Full-duplex communication
+    - Socket.io: message sending and announcing; 
+- Return non-screen: channel-message loading;
+
 ### Technical Challenges
 - css and js not updating
     - reason: browser cache

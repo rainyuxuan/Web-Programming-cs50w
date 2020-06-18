@@ -3,7 +3,7 @@ const createChannelModal = Handlebars.compile(document.querySelector('#createCha
 const channelListItem = Handlebars.compile(document.querySelector('#channelListItemTemplate').innerHTML);
 const messageOfUser = Handlebars.compile(document.querySelector('#messageOfUserTemplate').innerHTML);
 const messageOfOther = Handlebars.compile(document.querySelector('#messageOfOtherTemplate').innerHTML);
-
+var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
 // DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -13,54 +13,70 @@ document.addEventListener('DOMContentLoaded', () => {
     // show dnm after page loaded
     if (!localStorage['username'] || localStorage['username'] === ''){
         document.body.innerHTML += (displayNameModal({
-            'name': 'Tell me thy name'
+            'name': ''
         }));
-        console.log("AUTO-loaded dnm");
+        
     }else{
         console.log('Have a stored name already');
-        updateDisplayName(localStorage['username']);
+        document.body.innerHTML += (displayNameModal({
+            'name': localStorage['username']
+        }));
     }
-    
+    console.log("AUTO-loaded dnm");
 
     // Connect to websocket
-    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+    // var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
-    socket.on('connect', () => {
-        // Sending a message
-        document.querySelector('#messageInputForm').onsubmit = () => {
-            let messageContent = document.querySelector('#messageInput').value;
-            let messageName = document.querySelector('#username').textContent;
-            let messageTime = getCurrentTime();
+    
 
-            socket.emit('send message', {
-                'channel': document.querySelector('#channelName').dataset.id,
-                'content': messageContent,
-                'name': messageName,
-                'time': messageTime
-            });
-
-
-            // request.open('POST', '/send');
-
-            // request.onload = () =>{
-            //     const message = JSON.parse(request.responseText);
-
-            //     const name = message.name;
-            //     const time = message.time;
-            //     const content = message.content;
-            // };
-        };
-    });
-
-    socket.on('announce message', message => {
-        const li = document.createElement('li');
-        li.innerHTML = `Vote recorded: ${data.selection}`;
-        document.querySelector('#votes').append(li);
-    });
-
+    // when someone create a channel, user also add this channel to list
+    
 });
 
 
+///////////////////// ON START /////////////////////
+socket.on('connect', () => {
+
+    console.log('socket.io is on connected')
+    // Sending a message
+    // document.querySelector('#messageInputForm').onsubmit = () => {
+    //     let messageContent = document.querySelector('#messageInput').value;
+    //     let messageName = document.querySelector('#username').textContent;
+    //     let messageTime = getCurrentTime();
+
+    //     socket.emit('send message', {
+    //         'channel': document.querySelector('#channelName').dataset.id,
+    //         'content': messageContent,
+    //         'name': messageName,
+    //         'time': messageTime
+    //     });
+
+
+    //     // request.open('POST', '/send');
+
+    //     // request.onload = () =>{
+    //     //     const message = JSON.parse(request.responseText);
+
+    //     //     const name = message.name;
+    //     //     const time = message.time;
+    //     //     const content = message.content;
+    //     // };
+    // };
+
+    
+});
+
+socket.on('announce channel', data=>{
+    const channelName = data['channel_name'];
+    const channelID = data['channel_id'];
+    console.log('RECEIVED and announcing #' + channelID + channelName);
+    const newChannel = channelListItem({'channelID': channelID, 'channelName': channelName});
+    // Add to channel list
+    document.querySelector('#exploreChannels').innerHTML += newChannel;
+    console.log('ADD '+ channelID + channelName +' to channel list');
+});
+
+///////////////////// CCM MODAL /////////////////////
 
 // show ccm after clicking new star button
 function createChannel(){
@@ -82,18 +98,21 @@ function submitChannel(){
     }
 
     // Add to server
+    socket.emit('create channel', {'channel_name': channelName});
     
-    const channelID = 1231;
-    const newChannel = channelListItem({'channelID': channelID, 'channelName': channelName});
+    // const channelID = 1231;
+    // const newChannel = channelListItem({'channelID': channelID, 'channelName': channelName});
     // Add to channel list
-    document.querySelector('#exploreChannels').innerHTML += newChannel;
-    console.log('ADD '+ channelID + channelName +' to channel list');
+    // document.querySelector('#favChannels').innerHTML += newChannel;
+    // console.log('ADD '+ channelID + channelName +' to channel list');
 
     // close modal
-    document.querySelector("#modalCreateChannel").remove();
-    document.querySelector(".back-cover").remove();
+    cancelModal();
     console.log('FINISHED submitChannel!\n=========');
 }
+
+
+///////////////////// DNM MODAL /////////////////////
 
 // show dnm after clicking logout button
 function logout(){
@@ -120,8 +139,7 @@ function submitDisplayName(){
     updateDisplayName(name);
 
     // close modal
-    document.querySelector("#modalDisplayName").remove();
-    document.querySelector(".back-cover").remove();
+    cancelModal();
     console.log('FINISHED submitDisplayName!\n=========');
 }
 
@@ -136,6 +154,17 @@ function updateDisplayName(newName) {
     console.log('CHANGED displayed #username, finished function\n-----');
 }
 
+
+
+// cancel create channel by hiding ccm
+function cancelModal(){
+    // close modal
+    document.querySelector(".modal").remove();
+    document.querySelector(".back-cover").remove();
+}
+
+
+///////////////////// SEND MESSAGES /////////////////////
 
 // submit a message
 function submitMessage() {
@@ -175,6 +204,25 @@ function getCurrentTime() {
 }
 
 
+
+///////////////////// CHAT SECTION /////////////////////
+
+// open a channel to the chat section
+function openChannel(channelID){
+    console.log("open channel #" +channelID);
+    // get messages from the server
+    messages= "";
+    loadChannel(messages);
+}
+
+// put messages of this channel to the chat section
+function loadChannel(messages){
+
+}
+
+
+
+
 // a sleep function
 function sleep(milliseconds) {
     const date = Date.now();
@@ -182,8 +230,4 @@ function sleep(milliseconds) {
     do {
       currentDate = Date.now();
     } while (currentDate - date < milliseconds);
-}
-
-function openChannel(channelID){
-    console.log("open channel #" +channelID);
 }

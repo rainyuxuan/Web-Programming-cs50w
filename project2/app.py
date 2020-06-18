@@ -60,9 +60,9 @@ USER = None
 @app.route("/")
 def index():
     session.clear()
-
-    channels = db.execute('SELECT * FROM channels')
-    return render_template('index.html')
+    fav_channels= db.execute('SELECT * FROM channels WHERE id < 5')
+    explore_channels = db.execute('SELECT * FROM channels WHERE id > 4')
+    return render_template('index.html', favChannels=fav_channels, channels=explore_channels)
 
 
 # @app.route("/send", methods=["POST"])
@@ -71,6 +71,14 @@ def index():
 #     name = session['user'].name
 
 
-@socketio.on("send message")
-def send(message):
-    emit('announce message', message, broadcast=True)
+@socketio.on("create channel")
+def create(data):
+    channel_name = data['channel_name']
+    db.execute("INSERT INTO channels (name) VALUES (:channel_name)", {"channel_name": channel_name})
+    new_channel = db.execute("SELECT * FROM channels WHERE name = :channel_name", {"channel_name": channel_name})
+    channel_id = new_channel['id']
+    channel_name = new_channel['name']
+    emit("announce channel",{"channel_name":channel_name, "channel_id": channel_id}, broadcast=True)
+
+# @socketio.on("announce channel")
+# def announce_channel

@@ -395,11 +395,27 @@ p {
     width: 80%;
 }
 
+.btn-area {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-left: 10%;
+    padding-right: 10%;
+    margin: auto;
+}
+
 #modalCreateChannel button {
-    width: 40%;
+    width: 35%;
 }
 
 #modalCreateChannel button:active,
 #modalCreateChannel button:hover {
     background-color: #3e4247;
+}
+
+#cancelModalBtn {
+    width: 20%;
 }
