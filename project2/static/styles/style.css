@@ -1,3 +1,7 @@
+* {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+
 button {
     outline: none !important;
 }
@@ -236,6 +240,7 @@ p {
 
 .other .message-content {
     background-color: #3F7687;
+    background-image: linear-gradient(to right, #3F7687, #3F7687, #3F7687, #6EAE91);
     margin-left: 1.5em;
     margin-right: auto;
 }
@@ -254,6 +259,7 @@ p {
 
 .mine .message-content {
     background-color: #6EAE91;
+    background-image: linear-gradient(to right, #6EAE91, #6EAE91, #6EAE91, #3F7687);
     margin-left: auto;
     margin-right: 1.5em;
     padding-left: 1.5em;

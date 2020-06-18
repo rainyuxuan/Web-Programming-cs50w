@@ -1,8 +1,8 @@
 const displayNameModal = Handlebars.compile(document.querySelector('#displayNameModalTemplate').innerHTML);
 const createChannelModal = Handlebars.compile(document.querySelector('#createChannelModalTemplate').innerHTML);
-var channelListItem = Handlebars.compile(document.querySelector('#channelListItemTemplate').innerHTML);
-var messageOfUser = Handlebars.compile(document.querySelector('#messageOfUserTemplate').innerHTML);
-var messageOfOther = Handlebars.compile(document.querySelector('#messageOfOtherTemplate').innerHTML);
+const channelListItem = Handlebars.compile(document.querySelector('#channelListItemTemplate').innerHTML);
+const messageOfUser = Handlebars.compile(document.querySelector('#messageOfUserTemplate').innerHTML);
+const messageOfOther = Handlebars.compile(document.querySelector('#messageOfOtherTemplate').innerHTML);
 
 
 // DOMContentLoaded
@@ -72,19 +72,19 @@ function createChannel(){
 // submit channel to the server and channel list after clicking depart button
 function submitChannel(){
     console.log('CLICKED DEPART button => INTO submitChannel');
-    channelName = document.querySelector('#inputChannelName').value;
-    console.log("GET <" + name + "> as newName");
+    const channelName = document.querySelector('#inputChannelName').value;
+    console.log("GET <" + channelName + "> as a new Channel");
 
     // Check restrictions
-    if (name.length < 2){
+    if (channelName.length < 2){
         console.log('REJECT name for too short');
         return;
     }
 
     // Add to server
     
-    channelID = 1231;
-    newChannel = channelListItem({'name': channelName, 'id': channelID});
+    const channelID = 1231;
+    const newChannel = channelListItem({'channelID': channelID, 'channelName': channelName});
     // Add to channel list
     document.querySelector('#exploreChannels').innerHTML += newChannel;
     console.log('ADD '+ channelID + channelName +' to channel list');
@@ -98,7 +98,8 @@ function submitChannel(){
 // show dnm after clicking logout button
 function logout(){
     console.log('CLICKED Log-out button => INTO logout');
-    const oldName = document.querySelector('#username').innerHTML;
+    // const oldName = document.querySelector('#username').innerHTML;
+    const oldName = localStorage['username'];
     document.body.innerHTML += displayNameModal({
         'name': oldName
     });
@@ -108,7 +109,7 @@ function logout(){
 // submit display name after clicking CONFIRM (#submitDisplayNameBtn)
 function submitDisplayName(){
     console.log('CLICKED CONFIRM button => INTO submitDisplayName');
-    name = document.querySelector('#inputDisplayName').value;
+    const name = document.querySelector('#inputDisplayName').value;
     // Check restrictions
     if (name.length < 2){
         console.log('REJECT name for too short');
@@ -139,14 +140,14 @@ function updateDisplayName(newName) {
 // submit a message
 function submitMessage() {
     console.log('SUBMIT message => INTO submitMessage');
-    let messageContent = document.querySelector('#messageInput').value;
-    let messageTime = getCurrentTime()['string'];
-    let messageName = document.querySelector("#username").textContent;
+    const messageContent = document.querySelector('#messageInput').value;
+    const messageTime = getCurrentTime()['string'];
+    const messageName = document.querySelector("#username").textContent;
 
     console.log(messageName +'@' + messageTime + ": '" + messageContent + "'");
     // add to server
     // add to user
-    let message = messageOfUser({'messageName': messageName, 'messageTime': messageTime, "messageContent": messageContent});
+    const message = messageOfUser({'messageName': messageName, 'messageTime': messageTime, "messageContent": messageContent});
     document.querySelector('#messageList').innerHTML += message;
     console.log('send message to my list')
     // add to other
@@ -181,4 +182,8 @@ function sleep(milliseconds) {
     do {
       currentDate = Date.now();
     } while (currentDate - date < milliseconds);
+}
+
+function openChannel(channelID){
+    console.log("open channel #" +channelID);
 }

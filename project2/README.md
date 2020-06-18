@@ -1,3 +1,13 @@
-# Project 2
+# Project 2: Anonymous Async Chatroom Website: Stelamaso
 
-Web Programming with Python and JavaScript
+### Technical Challenges
+- css and js not updating
+    - reason: browser cache
+    - solution: code in app.py
+- conflicting Jinja template and Handlebars template
+    - reason: Jinja is loaded first so that Handlebars won't be loaded
+    - solution: {% raw -%}{%- raw %} can indicate Handlebars
+
+### Left Questions
+- DOMContentLoaded ?
+- script in head or body

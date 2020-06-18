@@ -15,6 +15,7 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
 # Check for environment variable
+app.config['DATABASE_URL'] = "postgres://vzmwajfljusmpe:71073bfaaeeb5ebcdb98f04e360058843870d01305ff1a30828d4392404cebf3@ec2-18-233-32-61.compute-1.amazonaws.com:5432/dr9b48f0b5ur3"
 if not os.getenv("DATABASE_URL"):
     raise RuntimeError("DATABASE_URL is not set")
 

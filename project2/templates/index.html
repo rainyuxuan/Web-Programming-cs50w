@@ -19,7 +19,8 @@
 
 
     <!-- Display Name Modal Template-->
-    <script id="displayNameModalTemplate" type="text/template">
+    <script id="displayNameModalTemplate" type="text/x-handlebars-template">
+        {% raw -%}
         <div class="back-cover"></div>
         <div id="modalDisplayName" class="modal">
             <h5>How should Stelamaso call you?</h5>
@@ -27,10 +28,11 @@
             <button id="submitDisplayNameBtn" type='submit' autofocus onclick="submitDisplayName()">CONFIRM</button>
             <!-- <button id="cancelDisplayNameBtn" type='cancel'>Cancel</button> -->
         </div>
+        {%- endraw %}
     </script>
 
     <!-- Create Channel Modal Template -->
-    <script id="createChannelModalTemplate" type="text/template">
+    <script id="createChannelModalTemplate" type="text/x-handlebars-template">
         <div class="back-cover"></div>
         <div id="modalCreateChannel" class="modal">
             <h5>Exploit a New Star</h5>
@@ -40,16 +42,19 @@
     </script>
 
     <!-- Channel List Item Template -->
-    <script id="channelListItemTemplate" type="text/template">
-        <li><button class="channelBtn">#{{ id }} {{ name }} </button></li>
+    <script id="channelListItemTemplate" type="text/x-handlebars-template">
+        {% raw -%}
+        <li><button class="channelBtn" data-channelid="{{ channelID }}" onclick="openChannel(this.dataset.channelid)">#{{ channelID }} {{ channelName }} </button></li>
+        {%- endraw %}
     </script>
 
     <!-- Other's Message Template -->
-    <script id="messageOfOtherTemplate" type="text/template">
+    <script id="messageOfOtherTemplate" type="text/x-handlebars-template">
+        {% raw -%}
         <li>
             <div class="message other">
                 <div class="message-info">
-                    <img src="https://img.icons8.com/color/30/000000/star-wars-empire-ship.png" style="margin-bottom: 0.4em; margin-right:0.6em;" />
+                    <img src="https://img.icons8.com/offices/40/000000/gremlin2.png" style="margin-bottom: 0.4em; margin-right:0.6em;" />
                     <h6>{{ messageName }}</h6>
                     <h6>{{ messageTime }}</h6>
                 </div>
@@ -58,22 +63,25 @@
                 </div>
             </div>
         </li>
+        {%- endraw %}
     </script>
 
     <!-- My message Template -->
-    <script id="messageOfUserTemplate" type="text/template">
+    <script id="messageOfUserTemplate" type="text/x-handlebars-template">
+        {% raw -%}
         <li>
             <div class="message mine">
                 <div class="message-info">
-                    <img src="https://img.icons8.com/color/30/000000/star-wars-rebellion-ship.png" style="margin-bottom: 0.4em; margin-left:0.6em;" />
-                    <h6>Astronaut Alpha</h6>
-                    <h6>Now</h6>
+                    <img src="https://img.icons8.com/color/40/000000/astronaut-helmet.png" style="margin-bottom: 0.4em; margin-left:0.6em;" />
+                    <h6>{{ messageName }}</h6>
+                    <h6>{{ messageTime }}</h6>
                 </div>
                 <div class="message-content">
-                    <p>Hey Homie, What's up!</p>
+                    <p>{{ messageContent }}</p>
                 </div>
             </div>
         </li>
+        {%- endraw %}
     </script>
     <!-- Main js -->
     <script>
@@ -135,7 +143,7 @@
                 <li>
                     <div class="message other">
                         <div class="message-info">
-                            <img src="https://img.icons8.com/color/30/000000/star-wars-empire-ship.png" style="margin-bottom: 0.4em; margin-right:0.6em;" />
+                            <img src="https://img.icons8.com/office/40/000000/gremlin2.png" style="margin-bottom: 0.4em; margin-right:0.6em;" />
                             <h6>Spaceman Beta</h6>
                             <h6>1999.12.12</h6>
                         </div>
@@ -152,7 +160,7 @@
                 <li>
                     <div class="message mine">
                         <div class="message-info">
-                            <img src="https://img.icons8.com/color/30/000000/star-wars-rebellion-ship.png" style="margin-bottom: 0.4em; margin-left:0.6em;" />
+                            <img src="https://img.icons8.com/color/40/000000/astronaut-helmet.png" style="margin-bottom: 0.4em; margin-left:0.6em;" />
                             <h6>Astronaut Alpha</h6>
                             <h6>2020.6.15</h6>
                         </div>
