@@ -67,10 +67,6 @@ def index():
     return render_template('index.html', favChannels=fav_channels, channels=explore_channels)
 
 
-# @app.route("/send", methods=["POST"])
-# def send():
-#     message = request.form.get("messageInput")
-#     name = session['user'].name
 @app.route("/<string:channel_id>")
 def channel(channel_id):
     channel = db.execute("SELECT * FROM channels WHERE id = :id", {'id':channel_id}).fetchone();
@@ -95,6 +91,14 @@ def channel(channel_id):
     return jsonify({'id' : channel_id, 'name' : channel.name, 'messages' : m})
 
 
+# @app.route("/send", methods=["POST"])
+# def message(data):
+#     channel_id = data['channel']
+#     name = data['name']
+#     time = data['time']
+#     content = data['content']
+
+
 @socketio.on("create channel")
 def create(data):
     print('INTO SOCKET')
@@ -105,7 +109,8 @@ def create(data):
     channel_id = new_channel['id']
     channel_name = new_channel['name']
     print(channel_id, channel_name, new_channel)
-    emit("announce channel", {"channel_name":channel_name, "channel_id": channel_id}, broadcast=True)
+    emit("announce channel", {"channel_name":channel_name, "channel_id": channel_id, 'creator': data['creator']}, broadcast=True)
+
 
 @socketio.on("send message")
 def send(data):
@@ -118,7 +123,8 @@ def send(data):
     db.execute('INSERT INTO messages (channel_id, name, time, content) VALUES (:channel_id, :name, :time, :content)', {'channel_id':channel_id, 'name':name, 'time':time, 'content':content})
     db.commit()
     print(f"Inserted message: #{channel_id} {name}@{time}: {content}")
-    emit("announce message", data, broadcast=True)
+    emit("post message", data, broadcast=True)
+
 
 if __name__ == '__main__': 
     socketio.run(app)

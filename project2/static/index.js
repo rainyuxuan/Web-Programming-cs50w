@@ -11,7 +11,6 @@ var currentChannel = 1;
 // DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM Content loaded");
-    
     //const Handlebars = require("handlebars");
 
     // show dnm after page loaded
@@ -21,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }));
         
     } else {
-        displayName = localStorage['username'];
+        // displayName = localStorage['username'];
         console.log('Have a stored name already');
         document.body.innerHTML += (displayNameModal({
             'name': localStorage['username']
@@ -48,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('error', function(){
         console.log("Sorry, there seems to be an issue with the connection!");
     });
-    // var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
     socket.on('connect', () => {
         console.log('socket.io is on connected')
     });
@@ -56,24 +55,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // when someone create a channel, user also add this channel to list
     socket.on('announce channel', data => {
+        // receive data
         const channelName = data['channel_name'];
         const channelID = data['channel_id'];
+        const creator = data['creator'];
         console.log('RECEIVED and announcing #' + channelID + channelName);
         const newChannel = channelListItem({'channelID': channelID, 'channelName': channelName});
         // Add to channel list
         document.querySelector('#favChannels').innerHTML += newChannel;
         console.log('ADD '+ channelID + channelName +' to channel list');
+
+        // Announce channel creation
+        sendMessage({'channel': channelID, 'name': creator, 'time': getCurrentTime()['string'],
+                     'content': `Saluton! Mi nur trovis #${channelID} ${channelName}!`});
     });
     
-    socket.on('announce message', data => {
+
+    // post message to channel after respond from server
+    socket.on('post message', data => {
+        // receive data
         const channelID = data['channel'];
         const name = data['name'];
         const time = data['time'];
         const content = data['content'];
         console.log(`RECEIVED and will announce #${channelID}, ${name}@${time}: ${content}`);
+        // create HTML element
         if (channelID == currentChannel){
             console.log('GET a message of this channel')
-            const newMessage = null;
+            let newMessage = null;
             if (name == displayName){
                 console.log('This is message of Mine');
                 newMessage = messageOfUser({'messageName': name, 'messageTime': time, 'messageContent': content});
@@ -81,13 +90,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('This is message of Other');
                 newMessage = messageOfOther({'messageName': name, 'messageTime': time, 'messageContent': content});
             }
-            document.querySelector('#messageList').innerHTML = newMessage;
+            // add to message list and remove input
+            document.querySelector('#messageList').innerHTML += newMessage;
+            document.querySelector('#messageInput').value = '';
         }
     });
 });
-
-
-///////////////////// ON START /////////////////////
 
 
 
@@ -114,16 +122,12 @@ function submitChannel(){
 
     // Add to server
     console.log("going to server")
-    socket.emit('create channel', {'channel_name': channelName});
-    
-    // const channelID = 1231;
-    // const newChannel = channelListItem({'channelID': channelID, 'channelName': channelName});
-    // Add to channel list
-    // document.querySelector('#favChannels').innerHTML += newChannel;
-    // console.log('ADD '+ channelID + channelName +' to channel list');
+    socket.emit('create channel', {'channel_name': channelName, 'creator': displayName});
 
     // close modal
     cancelModal();
+    
+    // open this new channel
     console.log('FINISHED submitChannel!\n=========');
 }
 
@@ -185,30 +189,36 @@ function cancelModal(){
 
 // submit a message
 function submitMessage() {
-    return;
     console.log('SUBMIT message => INTO submitMessage');
     const messageContent = document.querySelector('#messageInput').value;
     const messageTime = getCurrentTime()['string'];
     const messageName = document.querySelector("#username").textContent;
-    if(messageContent.length)
+
+    // check restrictions
+    if(messageContent.length == 0){
+        return;
+    }
 
     console.log(messageName +'@' + messageTime + ": '" + messageContent + "'");
     // Add to server
     console.log("going to server")
-    socket.emit('send message', {'channel': currentChannel, 'name': messageName, 'time': messageTime, 'content': messageContent});
-    // add to user
-    // const message = messageOfUser({'messageName': messageName, 'messageTime': messageTime, "messageContent": messageContent});
-    // document.querySelector('#messageList').innerHTML += message;
-    // console.log('send message to my list')
-    // add to other
-
+    sendMessage({'channel': currentChannel, 'name': messageName, 'time': messageTime, 'content': messageContent})
+    // socket.emit('send message', {'channel': currentChannel, 'name': messageName, 'time': messageTime, 'content': messageContent});
     
-    //document.querySelector('#messageInput').value = "";
     console.log('FINISHED submitMessage');
-    setTimeout(() => {  console.log("World!"); }, 5000);
 }
 
+// send message to the server {channel, name, time, content}
+function sendMessage(message){
+    console.log('INTO sendMessage');
+    const channel = message.channel;
+    const name = message.name;
+    const time = message.time;
+    const content = message.content;
 
+    // send to server
+    socket.emit('send message', {'channel': channel, 'name': name, 'time': time, 'content': content});
+}
 
 
 // get current time => dict{}
@@ -242,19 +252,15 @@ function openChannel(channelID){
     request.onload = () => {
         const response = JSON.parse(request.response);
         console.log("GET RESPONSE: " + response);
-        // 这里是ok的
-        
-        //以下不ok
         const id = response.id;
         const name = response.name;
+        // Update channel name
         document.querySelector('#channelName').innerHTML = `${name} #${id}`
+        // Update channel messages
         const messages = response.messages;
         console.log('contents will be #' + id + name +": "+ messages);
         messagesHTML = loadMessages(messages);
-        console.log("HTML content finished creating");
-        document.querySelector('#messageList').innerHTML = messagesHTML;
-        
-        
+        document.querySelector('#messageList').innerHTML = messagesHTML;  
     };
     request.send();    
 }
@@ -269,17 +275,15 @@ function loadMessages(messages){
     // make each message into HTML element
     // message = [name, time, content]
     for (const message of messages){
-        console.log('LOOP to one message: ' + message);
+        // console.log('LOOP to one message: ' + message);
         if (message[0] == displayName){
             result += messageOfUser({'messageName': message[0], 'messageTime': message[1], 'messageContent': message[2]});
         } else {
             result += messageOfOther({'messageName': message[0], 'messageTime': message[1], 'messageContent': message[2]});
         }
     };
-    // console.log("RESULT of loadMessage is" + result);
     return result;
 }
-
 
 
 
