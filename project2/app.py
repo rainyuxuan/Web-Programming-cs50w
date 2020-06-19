@@ -75,7 +75,7 @@ def index():
 def channel(channel_id):
     channel = db.execute("SELECT * FROM channels WHERE id = :id", {'id':channel_id}).fetchone();
     if channel is None:
-        return "None"
+        return f"Error 404: Stelo #{channel_id} not Found"
     messages = db.execute("SELECT * FROM messages WHERE channel_id = :channel_id ORDER BY id ASC", {'channel_id':channel_id}).fetchall();
     db.commit()
     # print(messages)
@@ -107,8 +107,18 @@ def create(data):
     print(channel_id, channel_name, new_channel)
     emit("announce channel", {"channel_name":channel_name, "channel_id": channel_id}, broadcast=True)
 
-
-
+@socketio.on("send message")
+def send(data):
+    # data = {'channel', 'name', 'time', 'content'}
+    print('INTO send Socket')
+    channel_id = data['channel']
+    name = data['name']
+    time = data['time']
+    content = data['content']
+    db.execute('INSERT INTO messages (channel_id, name, time, content) VALUES (:channel_id, :name, :time, :content)', {'channel_id':channel_id, 'name':name, 'time':time, 'content':content})
+    db.commit()
+    print(f"Inserted message: #{channel_id} {name}@{time}: {content}")
+    emit("announce message", data, broadcast=True)
 
 if __name__ == '__main__': 
     socketio.run(app)

@@ -16,3 +16,5 @@
 ### Left Questions
 - DOMContentLoaded ?
 - script in head or body
+- why failed jsonify?
+- request.response what receive types?

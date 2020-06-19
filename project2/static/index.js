@@ -14,6 +14,21 @@ document.addEventListener('DOMContentLoaded', () => {
     
     //const Handlebars = require("handlebars");
 
+    // show dnm after page loaded
+    if (!localStorage['username'] || localStorage['username'] === ''){
+        document.body.innerHTML += (displayNameModal({
+            'name': ''
+        }));
+        
+    } else {
+        displayName = localStorage['username'];
+        console.log('Have a stored name already');
+        document.body.innerHTML += (displayNameModal({
+            'name': localStorage['username']
+        }));
+    }
+    console.log("AUTO-loaded dnm");
+
     // load channel when start
     if (!localStorage['channel'] || localStorage['channel'] == ''){
         // first user, load Universo
@@ -27,19 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(`Finished opening ${localStorage['channel']}`);
     }
 
-    // show dnm after page loaded
-    if (!localStorage['username'] || localStorage['username'] === ''){
-        document.body.innerHTML += (displayNameModal({
-            'name': ''
-        }));
-        
-    } else {
-        console.log('Have a stored name already');
-        document.body.innerHTML += (displayNameModal({
-            'name': localStorage['username']
-        }));
-    }
-    console.log("AUTO-loaded dnm");
+    
 
     // Connect to websocket
     socket.on('error', function(){
@@ -47,34 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     // var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
     socket.on('connect', () => {
-
         console.log('socket.io is on connected')
-        // Sending a message
-        // document.querySelector('#messageInputForm').onsubmit = () => {
-        //     let messageContent = document.querySelector('#messageInput').value;
-        //     let messageName = document.querySelector('#username').textContent;
-        //     let messageTime = getCurrentTime();
-    
-        //     socket.emit('send message', {
-        //         'channel': document.querySelector('#channelName').dataset.id,
-        //         'content': messageContent,
-        //         'name': messageName,
-        //         'time': messageTime
-        //     });
-    
-    
-        //     // request.open('POST', '/send');
-    
-        //     // request.onload = () =>{
-        //     //     const message = JSON.parse(request.responseText);
-    
-        //     //     const name = message.name;
-        //     //     const time = message.time;
-        //     //     const content = message.content;
-        //     // };
-        // };
-    
-        
     });
     
 
@@ -89,6 +65,25 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('ADD '+ channelID + channelName +' to channel list');
     });
     
+    socket.on('announce message', data => {
+        const channelID = data['channel'];
+        const name = data['name'];
+        const time = data['time'];
+        const content = data['content'];
+        console.log(`RECEIVED and will announce #${channelID}, ${name}@${time}: ${content}`);
+        if (channelID == currentChannel){
+            console.log('GET a message of this channel')
+            const newMessage = null;
+            if (name == displayName){
+                console.log('This is message of Mine');
+                newMessage = messageOfUser({'messageName': name, 'messageTime': time, 'messageContent': content});
+            } else {
+                console.log('This is message of Other');
+                newMessage = messageOfOther({'messageName': name, 'messageTime': time, 'messageContent': content});
+            }
+            document.querySelector('#messageList').innerHTML = newMessage;
+        }
+    });
 });
 
 
@@ -190,17 +185,21 @@ function cancelModal(){
 
 // submit a message
 function submitMessage() {
+    return;
     console.log('SUBMIT message => INTO submitMessage');
     const messageContent = document.querySelector('#messageInput').value;
     const messageTime = getCurrentTime()['string'];
     const messageName = document.querySelector("#username").textContent;
+    if(messageContent.length)
 
     console.log(messageName +'@' + messageTime + ": '" + messageContent + "'");
-    // add to server
+    // Add to server
+    console.log("going to server")
+    socket.emit('send message', {'channel': currentChannel, 'name': messageName, 'time': messageTime, 'content': messageContent});
     // add to user
-    const message = messageOfUser({'messageName': messageName, 'messageTime': messageTime, "messageContent": messageContent});
-    document.querySelector('#messageList').innerHTML += message;
-    console.log('send message to my list')
+    // const message = messageOfUser({'messageName': messageName, 'messageTime': messageTime, "messageContent": messageContent});
+    // document.querySelector('#messageList').innerHTML += message;
+    // console.log('send message to my list')
     // add to other
 
     
@@ -208,6 +207,8 @@ function submitMessage() {
     console.log('FINISHED submitMessage');
     setTimeout(() => {  console.log("World!"); }, 5000);
 }
+
+
 
 
 // get current time => dict{}
@@ -242,17 +243,17 @@ function openChannel(channelID){
         const response = JSON.parse(request.response);
         console.log("GET RESPONSE: " + response);
         // 这里是ok的
-        if (response != "None") {
-            //以下不ok
-            const id = response.id;
-            const name = response.name;
-            document.querySelector('#channelName').innerHTML = `${name} #${id}`
-            const messages = response.messages;
-            console.log('contents will be #' + id + name +": "+ messages);
-            messagesHTML = loadMessages(messages);
-            console.log("HTML content finished creating");
-            document.querySelector('#messageList').innerHTML = messagesHTML;
-        }
+        
+        //以下不ok
+        const id = response.id;
+        const name = response.name;
+        document.querySelector('#channelName').innerHTML = `${name} #${id}`
+        const messages = response.messages;
+        console.log('contents will be #' + id + name +": "+ messages);
+        messagesHTML = loadMessages(messages);
+        console.log("HTML content finished creating");
+        document.querySelector('#messageList').innerHTML = messagesHTML;
+        
         
     };
     request.send();    
