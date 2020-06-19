@@ -5,18 +5,35 @@ const messageOfUser = Handlebars.compile(document.querySelector('#messageOfUserT
 const messageOfOther = Handlebars.compile(document.querySelector('#messageOfOtherTemplate').innerHTML);
 var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
+var displayName = "";
+var currentChannel = 1;
+
 // DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM Content loaded");
     
     //const Handlebars = require("handlebars");
+
+    // load channel when start
+    if (!localStorage['channel'] || localStorage['channel'] == ''){
+        // first user, load Universo
+        console.log('Opening channel UNIVERSO');
+        openChannel('1');
+        console.log('Finished opening Universo');
+    } else {
+        // load last channel
+        console.log(`Opening channel ${localStorage['channel']}`);
+        openChannel(localStorage['channel']);
+        console.log(`Finished opening ${localStorage['channel']}`);
+    }
+
     // show dnm after page loaded
     if (!localStorage['username'] || localStorage['username'] === ''){
         document.body.innerHTML += (displayNameModal({
             'name': ''
         }));
         
-    }else{
+    } else {
         console.log('Have a stored name already');
         document.body.innerHTML += (displayNameModal({
             'name': localStorage['username']
@@ -68,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('RECEIVED and announcing #' + channelID + channelName);
         const newChannel = channelListItem({'channelID': channelID, 'channelName': channelName});
         // Add to channel list
-        document.querySelector('#exploreChannels').innerHTML += newChannel;
+        document.querySelector('#favChannels').innerHTML += newChannel;
         console.log('ADD '+ channelID + channelName +' to channel list');
     });
     
@@ -152,8 +169,9 @@ function updateDisplayName(newName) {
     console.log('INTO updateDisplayName with:' + newName);
     // update local storage
     localStorage['username'] = newName;
-    // update to app
+    // update to to app
     // update to html
+    displayName = newName;
     document.querySelector('#username').innerHTML = newName;
     console.log('CHANGED displayed #username, finished function\n-----');
 }
@@ -213,15 +231,52 @@ function getCurrentTime() {
 
 // open a channel to the chat section
 function openChannel(channelID){
-    console.log("open channel #" +channelID);
+    console.log("INTO function => openChannel #" +channelID);
+    // set to html
+    currentChannel = channelID;
+    localStorage['channel'] = channelID;
     // get messages from the server
-    messages= "";
-    loadChannel(messages);
+    const request = new XMLHttpRequest();
+    request.open('GET', `/${channelID}`);
+    request.onload = () => {
+        const response = JSON.parse(request.response);
+        console.log("GET RESPONSE: " + response);
+        // 这里是ok的
+        if (response != "None") {
+            //以下不ok
+            const id = response.id;
+            const name = response.name;
+            document.querySelector('#channelName').innerHTML = `${name} #${id}`
+            const messages = response.messages;
+            console.log('contents will be #' + id + name +": "+ messages);
+            messagesHTML = loadMessages(messages);
+            console.log("HTML content finished creating");
+            document.querySelector('#messageList').innerHTML = messagesHTML;
+        }
+        
+    };
+    request.send();    
 }
 
-// put messages of this channel to the chat section
-function loadChannel(messages){
-
+// return the HTML contents for the messages
+function loadMessages(messages){
+    result = null;
+    // if no messages
+    if (messages.length == 0){
+        return Handlebars.compile('');
+    }
+    // make each message into HTML element
+    // message = [name, time, content]
+    for (const message of messages){
+        console.log('LOOP to one message: ' + message);
+        if (message[0] == displayName){
+            result += messageOfUser({'messageName': message[0], 'messageTime': message[1], 'messageContent': message[2]});
+        } else {
+            result += messageOfOther({'messageName': message[0], 'messageTime': message[1], 'messageContent': message[2]});
+        }
+    };
+    // console.log("RESULT of loadMessage is" + result);
+    return result;
 }
 
 

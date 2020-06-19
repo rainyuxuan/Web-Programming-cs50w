@@ -61,8 +61,8 @@ USER = None
 def index():
     # session.clear()
     print("OPEN")
-    fav_channels = db.execute('SELECT * FROM channels WHERE id < 5').fetchall()
-    explore_channels = db.execute('SELECT * FROM channels WHERE id > 4').fetchall()
+    fav_channels = db.execute('SELECT * FROM channels WHERE id < 5 ORDER BY id ASC').fetchall()
+    explore_channels = db.execute('SELECT * FROM channels WHERE id > 4 ORDER BY id ASC').fetchall()
     db.commit()
     return render_template('index.html', favChannels=fav_channels, channels=explore_channels)
 
@@ -71,6 +71,28 @@ def index():
 # def send():
 #     message = request.form.get("messageInput")
 #     name = session['user'].name
+@app.route("/<string:channel_id>")
+def channel(channel_id):
+    channel = db.execute("SELECT * FROM channels WHERE id = :id", {'id':channel_id}).fetchone();
+    if channel is None:
+        return "None"
+    messages = db.execute("SELECT * FROM messages WHERE channel_id = :channel_id ORDER BY id ASC", {'channel_id':channel_id}).fetchall();
+    db.commit()
+    # print(messages)
+    # print({'id' : channel_id, 'name' : channel.name, 'messages' : messages})
+    
+    # 直到这里都是没问题的
+    # FIXME: want a better solution than this
+    m = []
+    for message in messages:
+        n = message.name;
+        t = message.time;
+        c = message.content;
+        m.append([n, t, c])
+    print("JSON: ", str(jsonify({'id' : channel_id, 'name' : channel.name, 'messages' : m})))
+    # result = 
+    # print(result)
+    return jsonify({'id' : channel_id, 'name' : channel.name, 'messages' : m})
 
 
 @socketio.on("create channel")
@@ -85,8 +107,8 @@ def create(data):
     print(channel_id, channel_name, new_channel)
     emit("announce channel", {"channel_name":channel_name, "channel_id": channel_id}, broadcast=True)
 
-# @socketio.on("announce channel")
-# def announce_channel
+
+
 
 if __name__ == '__main__': 
     socketio.run(app)
