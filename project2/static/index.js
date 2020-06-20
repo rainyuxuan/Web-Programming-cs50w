@@ -271,6 +271,7 @@ function openChannel(channelID){
         console.log('contents will be #' + id + name +": "+ messages);
         messagesHTML = loadMessages(messages);
         document.querySelector('#messageList').innerHTML = messagesHTML;  
+        toBottom();
     };
     request.send();    
 }
