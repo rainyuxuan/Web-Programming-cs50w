@@ -89,9 +89,6 @@
         </li>
         {%- endraw %}
     </script>
-    <!-- Main js -->
-    <script>
-    </script>
 </head>
 
 <body>
@@ -108,26 +105,12 @@
                     {% for channel in favChannels %}
                     <li><button class="channelBtn" data-channelid="{{ channel.id }}" onclick="openChannel(this.dataset.channelid)">#{{ channel.id }} {{ channel.name }} </button></li>
                     {% endfor %}
-                    <!-- <li><button class="channelBtn">#0000 Universo</button></li>
-                    <li><button class="channelBtn">#0001 Lakta Vojo</button></li>
-                    <li><button class="channelBtn">#1101 Suna Stelo</button></li>
-                    <li><button class="channelBtn">#2001 Pac-Konsilio</button></li>
-                    <li><button class="channelBtn">#3001 Planeda Alianco</button></li>
-                    <li><button class="channelBtn">#3002 Karbon-baso</button></li> -->
                 </ul>
                 <h4>Explore Steloj</h4>
                 <ul class="channel-list" id="exploreChannels" style="padding-bottom: 3em;">
                     {% for channel in channels %}
                     <li><button class="channelBtn" data-channelid="{{ channel.id }}" onclick="openChannel(this.dataset.channelid)">#{{ channel.id }} {{ channel.name }} </button></li>
                     {% endfor %}
-                    <!-- <li><button class="channelBtn">#3004 Metala Kompanio</button></li>
-                    <li><button class="channelBtn">#1112 Stela Justeco</button></li>
-                    <li><button class="channelBtn">#1201 Stelo Ruĝa</button></li>
-                    <li><button class="channelBtn">#1202 Stelo Komunisma</button></li>
-                    <li><button class="channelBtn">#1233 Stelo Anarkiisma</button></li>
-                    <li><button class="channelBtn">#1598 Stela Ateisto</button></li>
-                    <li><button class="channelBtn">#1502 Stelo Agnostika</button></li>
-                    <li><button class="channelBtn">#1533 Stela Revoluciisto</button></li> -->
                 </ul>
             </div>
         </div>
