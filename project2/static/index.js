@@ -41,7 +41,12 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(`Finished opening ${localStorage['channel']}`);
     }
 
-    
+    // check for ENTER
+    document.getElementById('messageInput').onkeypress=function(e){
+        if(e.keyCode==13){
+            document.getElementById('sendBtn').click();
+        }
+    }    
 
     // Connect to websocket
     socket.on('error', function(){
@@ -61,13 +66,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const creator = data['creator'];
         console.log('RECEIVED and announcing #' + channelID + channelName);
         const newChannel = channelListItem({'channelID': channelID, 'channelName': channelName});
-        // Add to channel list
-        document.querySelector('#favChannels').innerHTML += newChannel;
-        console.log('ADD '+ channelID + channelName +' to channel list');
-
         // Announce channel creation
-        sendMessage({'channel': channelID, 'name': creator, 'time': getCurrentTime()['string'],
-                     'content': `Saluton! Mi nur trovis #${channelID} ${channelName}!`});
+        if (creator == displayName){
+            sendMessage({'channel': channelID, 'name': creator, 'time': getCurrentTime()['string'],
+                        'content': `Saluton! Mi nur trovis #${channelID} ${channelName}!`});
+            document.querySelector('#favChannels').innerHTML += newChannel;
+            openChannel(channelID);
+        } else {
+            document.querySelector('#exploreChannels').innerHTML += newChannel;
+        }
+        console.log('ADD '+ channelID + channelName +' to channel list');
     });
     
 
@@ -86,13 +94,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (name == displayName){
                 console.log('This is message of Mine');
                 newMessage = messageOfUser({'messageName': name, 'messageTime': time, 'messageContent': content});
+                // add to message list and remove input
+                document.querySelector('#messageList').innerHTML += newMessage;
+                document.querySelector('#messageInput').value = '';
+                toBottom();
             } else {
                 console.log('This is message of Other');
                 newMessage = messageOfOther({'messageName': name, 'messageTime': time, 'messageContent': content});
+                document.querySelector('#messageList').innerHTML += newMessage;
             }
-            // add to message list and remove input
-            document.querySelector('#messageList').innerHTML += newMessage;
-            document.querySelector('#messageInput').value = '';
         }
     });
 });
@@ -285,6 +295,11 @@ function loadMessages(messages){
     return result;
 }
 
+
+function toBottom(){
+    // scroll to bottom
+    $("#messageContainer").scrollTop($("#messageList")[0].scrollHeight);
+}
 
 
 // a sleep function

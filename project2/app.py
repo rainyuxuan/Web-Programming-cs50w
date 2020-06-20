@@ -135,8 +135,8 @@ def send(data):
 
 def delete_messages(channel_id):
     count = db.execute('SELECT COUNT(*) FROM messages WHERE channel_id = :channel_id', {'channel_id': channel_id}).fetchone()[0]
-    if count > 5:
-        num_delete = count - 5
+    if count > 100:
+        num_delete = count - 100
         delete_targets = db.execute('SELECT id FROM messages WHERE channel_id = :channel_id ORDER BY id ASC LIMIT :num', {'channel_id': channel_id, 'num': num_delete}).fetchall()
         print(delete_targets)
         print(channel_id)

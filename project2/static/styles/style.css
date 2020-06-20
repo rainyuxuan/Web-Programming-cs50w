@@ -239,8 +239,14 @@ p {
 }
 
 .other .message-content {
-    background-color: #3F7687;
-    background-image: linear-gradient(to right, #3F7687, #3F7687, #3F7687, #6EAE91);
+    /* background-color: #3F7687;
+    background-image: linear-gradient(to right, #3F7687, #3F7687, #3F7687, #6EAE91); */
+    background: #FC5C7D;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #6A82FB, #FC5C7D);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #6A82FB, #FC5C7D);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     margin-left: 1.5em;
     margin-right: auto;
 }
@@ -258,8 +264,14 @@ p {
 }
 
 .mine .message-content {
-    background-color: #6EAE91;
-    background-image: linear-gradient(to right, #6EAE91, #6EAE91, #6EAE91, #3F7687);
+    /* background-color: #6EAE91;
+    background-image: linear-gradient(to right, #6EAE91, #6EAE91, #6EAE91, #3F7687); */
+    background: #43C6AC;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #F8FFAE, #43C6AC);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #F8FFAE, #43C6AC);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     margin-left: auto;
     margin-right: 1.5em;
     padding-left: 1.5em;
